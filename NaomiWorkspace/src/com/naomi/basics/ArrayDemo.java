@@ -39,18 +39,16 @@ public class ArrayDemo {
 		
 		String[] machine = {"ON", "OFF", "STAND_BY"};
 		int status = (int)(Math.random() * machine.length); // 0-2 inclusive
-		System.out.println("status: "  +  status);
-		
 		switch (status) {
 		case 0:
 			System.out.println("status: " +  machine[0]);
-//			break;
+			break;
 		case 1:
 			System.out.println("status: " +  machine[1]);
-//			break;
+			break;
 		case 2:
 			System.out.println("status: " +  machine[2]);
-//			break;
+			break;
 		}
 	}
 }
