@@ -1,5 +1,7 @@
 package com.naomi.basics;
 
+import java.util.Arrays;
+
 import a.Point;
 
 public class ArrayDemo {
@@ -50,5 +52,18 @@ public class ArrayDemo {
 			System.out.println("status: " +  machine[2]);
 			break;
 		}
+		System.out.println("===============");
+		
+		//copy array to another array
+		int[] arr1 = {2,4,6};
+		System.out.println(Arrays.toString(arr1));
+		
+		int[] arr2 = new int[arr1.length+2];
+		System.out.println(Arrays.toString(arr2));
+		
+		//0-from where to start copy arr1
+		//1-from where start initialize arr2
+		System.arraycopy(arr1, 0, arr2, 1, arr1.length);
+		System.out.println(Arrays.toString(arr2));
 	}
 }

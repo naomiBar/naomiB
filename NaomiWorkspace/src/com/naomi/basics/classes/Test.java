@@ -9,6 +9,7 @@ public class Test {
 		//אחרת ממחלקה אובייקט ליצור אפשר --> import ידי על
 		Point p = new Point(5,9);
 		p.printPoint();
+		System.out.println("===============");
 		
 		//Circle
 		Circle c = new Circle();
@@ -16,12 +17,14 @@ public class Test {
 		c.setRadius(2);
 		Circle c2 = new Circle("red",3);
 		System.out.println("C2.color: " + c2.getColor());
+		System.out.println("===============");
 		
 		//Rectangle
 		Rectangle r = new Rectangle(3,5);
 		r.print();
 		System.out.println("Area: " + r.getArea());
 		System.out.println("Perimeter: " + r.getPerimeter());
+		System.out.println("===============");
 		
 		//Line
 		Line li = new Line(10);
