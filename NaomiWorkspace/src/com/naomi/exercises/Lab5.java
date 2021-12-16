@@ -15,12 +15,16 @@ public class Lab5 {
 		}
 		System.out.println("the length of digits: " + length);
 		
+		
+		
 		//the right digit: [1998 --> 8]
 		System.out.println("===============");
 		System.out.println("   Ex2:");
 		int num2 = (int)(Math.random()*10_001);
 		System.out.println("the number: " + num2);
 		System.out.println("the right digit: " + (num2%10));
+		
+		
 		
 		//the left digit: [1998 --> 1]
 		System.out.println("===============");
@@ -33,6 +37,8 @@ public class Lab5 {
 			num3/=10;
 		}
 		System.out.println("the left digit: " + leftDig);
+		
+		
 		
 		//the opposite order of the number’s digits: [1998 --> 8991]
 		System.out.println("===============");
@@ -47,6 +53,8 @@ public class Lab5 {
 		}
 		System.out.println(num4 + " -> " + newNum);
 		
+		
+		
 		//sum of the number’s digits [ 473 --> 14]
 		System.out.println("===============");
 		System.out.println("   Ex5:");
@@ -58,6 +66,8 @@ public class Lab5 {
 			num5/=10;
 		}
 		System.out.println("the sum of the number’s digits: " + sum);
+		
+		
 		
 		System.out.println("===============");
 		System.out.println("   Ex6:");

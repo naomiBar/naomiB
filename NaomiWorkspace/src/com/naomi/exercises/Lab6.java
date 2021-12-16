@@ -14,6 +14,8 @@ public class Lab6 {
 			System.out.print(next + " ");
 		}
 
+		
+		
 		System.out.println("\n===============");
 		System.out.println("   Ex2:");
 		int index = (int) (Math.random() * 40) + 1;
@@ -27,6 +29,8 @@ public class Lab6 {
 		}
 		System.out.println(index + " -> " + next);
 
+		
+		
 		System.out.println("===============");
 		System.out.println("   Ex3:");
 		int value = (int) (Math.random() * 41) + 1; //10-50

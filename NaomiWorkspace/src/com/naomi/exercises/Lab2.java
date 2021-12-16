@@ -15,6 +15,8 @@ public class Lab2 {
 			System.out.println("Bingo!");
 		}
 
+		
+		
 		System.out.println("===============");
 		System.out.println("   Ex2:");
 		if (num % 2 == 0) {
@@ -23,6 +25,8 @@ public class Lab2 {
 			System.out.println("the number " + num + " is odd");
 		}
 
+		
+		
 		//SalaryRaiser
 		System.out.println("===============");
 		System.out.println("   Ex3:");
@@ -33,6 +37,8 @@ public class Lab2 {
 			newSal *= 1.05;
 		}
 		System.out.println("the updated salary: " + newSal);
+		
+		
 		
 		System.out.println("===============");
 		System.out.println("   Ex4:");
@@ -50,6 +56,8 @@ public class Lab2 {
 				System.out.println(c + " is the bigger value");								
 		}
 		
+		
+		
 		System.out.println("===============");
 		System.out.println("   Ex5:");
 		if(a<=b && a<=c) {
@@ -62,5 +70,4 @@ public class Lab2 {
 				System.out.println(c + " is the smaller value");								
 		}
 	}
-
 }

@@ -19,16 +19,16 @@ public class Boom7 {
 		}
 		for (int i = a; i <= b; i++) {
 			boolean isSeven = false;			
-			if (i == 7 || i % 7 == 0 || i % 10 == 7) {
+			if (i % 7 == 0 || i % 10 == 7) {
 				isSeven = true;
 			} else {
 				int temp = i;
 				while (temp != 0) {
+					temp = temp / 10;
 					if (temp % 10 == 7) {
 						isSeven = true;
 						temp = 0;
 					}
-					temp = (int) (temp / 10);
 				}
 			}
 

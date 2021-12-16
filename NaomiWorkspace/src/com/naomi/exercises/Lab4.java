@@ -11,6 +11,8 @@ public class Lab4 {
 			System.out.print(i + " ");
 		}
 
+		
+		
 		System.out.println("\n===============");
 		System.out.println("   Ex4:");
 		int a = (int) (Math.random() * 101); // 0-100 inclusive
@@ -22,6 +24,8 @@ public class Lab4 {
 			System.out.print(i + " ");
 		}
 
+		
+		
 		System.out.println("\n===============");
 		System.out.println("   Ex5:");
 		num = (int) (Math.random() * 101);
@@ -30,6 +34,8 @@ public class Lab4 {
 			System.out.print(i + " ");
 		}
 
+		
+		
 		System.out.println("\n===============");
 		System.out.println("   Ex6:");
 		int max = (int) (Math.random() * 101); // 0-100 inclusive
@@ -41,6 +47,8 @@ public class Lab4 {
 			}
 		}
 
+		
+		
 		System.out.println("\n===============");
 		System.out.println("   Ex7:");
 		num = (int) (Math.random() * 7) + 1;
@@ -51,6 +59,8 @@ public class Lab4 {
 		}
 		System.out.println("the factorial value : " + factorial);
 
+		
+		
 		System.out.println("===============");
 		System.out.println("   Ex8:");
 		System.out.println("the number: " + num);

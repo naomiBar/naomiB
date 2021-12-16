@@ -22,6 +22,8 @@ public class Lab7 {
 		}
 		System.out.println("‘a’ or ‘c’ chars inside the array " + count + " times");
 
+		
+		
 		System.out.println("===============");
 		System.out.println("   Ex2:");
 		String name = "John Bryce";
@@ -38,6 +40,8 @@ public class Lab7 {
 		}
 		System.out.println("\n‘h’ char inside the string " + count + " times");
 
+		
+		
 		System.out.println("===============");
 		System.out.println("   Ex3:");
 		String str = "Sara Shara Shir Cameach";

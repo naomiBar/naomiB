@@ -28,6 +28,7 @@ public class Lab3 {
 		System.out.println("the salary after tax : " + (salary - tax));
 
 		
+		
 		// Leap year
 		System.out.println("===============");
 		System.out.println("   Ex3:");

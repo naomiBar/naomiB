@@ -15,12 +15,14 @@ public class Lab1 {
 		System.out.println("the area of a rectangle: " + (a * b));
 
 		
+		
 		System.out.println("===============");
 		System.out.println("   Ex4:");
 		// (b-a+1) + a; // a - b inclusive
 		int minutes = (int) (Math.random() * 251) + 100; // 100-350 inclusive
 		System.out.println("the time in minutes: " + minutes);
 		System.out.println((minutes / 60) + ":" + (minutes % 60));
+		
 		
 		
 		System.out.println("===============");

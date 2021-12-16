@@ -15,6 +15,8 @@ public class Lab8 {
 			System.out.print(i + " ");
 		}
 
+		
+		
 		System.out.println("\n===============");
 		System.out.println("   Ex3:");
 		int sum = 0;
@@ -23,10 +25,14 @@ public class Lab8 {
 		}
 		System.out.println("the total sum of the numbers: " + sum);
 
+		
+		
 		System.out.println("===============");
 		System.out.println("   Ex4:");
 		System.out.println("the total average of the numbers: " + (sum / arr.length));
 
+		
+		
 		System.out.println("===============");
 		System.out.println("   Ex5:");
 		int max = 0, index = 0;
@@ -39,10 +45,14 @@ public class Lab8 {
 		}
 		System.out.println("the maximum number: " + max);
 
+		
+		
 		System.out.println("===============");
 		System.out.println("   Ex6:");
 		System.out.println("the maximum number and its index in the array: " + "arr[" + index + "]=" + max);
 
+		
+		
 		System.out.println("===============");
 		System.out.println("   Ex7:");
 		int min = arr[0];
@@ -54,7 +64,5 @@ public class Lab8 {
 			}
 		}
 		System.out.println("the minimum number and its index in the array: " + "arr[" + index + "]=" + min);
-
 	}
-
 }
