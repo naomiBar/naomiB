@@ -71,8 +71,9 @@ public class Lab10 {
 				grades[i][j] = (int) (Math.random() * 21) + 80;
 				sum += grades[i][j];
 			}
-			System.out.println("student " + (i+1) + ": " + sum/grades[i].length);
-			sumStudents += sum/grades[i].length;
+			int average = sum/grades[i].length;
+			System.out.println("student " + (i+1) + ": " + average);
+			sumStudents += average;
 		}
 		System.out.println("the class average grade is " + sumStudents/grades.length);
 	}
