@@ -1,6 +1,6 @@
-package com.naomi.basics.inheritance;
+package com.naomi.basics.classes.inheritance;
 
-public class Shape {
+public abstract class Shape {
 	
 	private String color;
 
@@ -19,9 +19,6 @@ public class Shape {
 		this.color = color;
 	}
 	
-	public double getArea() {
-		return -1;
-	}
 
 	@Override
 	public String toString() {
@@ -36,4 +33,6 @@ public class Shape {
 		Shape other = (Shape)obj;
 		return this.color == other.color;
 	}
+	
+	public abstract double getArea(); 
 }

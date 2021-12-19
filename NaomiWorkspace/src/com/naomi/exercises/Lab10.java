@@ -55,7 +55,6 @@ public class Lab10 {
 		int index = arr3.length - 1;
 		for (int i = 0; i < arr3.length; i++) {
 			newArr[index--] = arr3[i];
-
 		}
 		System.out.println(Arrays.toString(newArr));
 

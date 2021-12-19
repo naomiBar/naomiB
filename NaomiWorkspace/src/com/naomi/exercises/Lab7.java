@@ -27,10 +27,7 @@ public class Lab7 {
 		System.out.println("===============");
 		System.out.println("   Ex2:");
 		String name = "John Bryce";
-		char[] ch = new char[name.length()];
-		for (int i = 0; i < ch.length; i++) {
-			ch[i] = name.charAt(i);
-		}
+		char[] ch = name.toCharArray();
 		count = 0;
 		for (char c : ch) {
 			System.out.print(c);
@@ -45,10 +42,7 @@ public class Lab7 {
 		System.out.println("===============");
 		System.out.println("   Ex3:");
 		String str = "Sara Shara Shir Cameach";
-		char[] chars = new char[str.length()];
-		for (int i = 0; i < chars.length; i++) {
-			chars[i] = str.charAt(i);
-		}
+		char[] chars = str.toCharArray();
 		count = 0;
 		for (char c : chars) {
 			if (Character.toUpperCase(c) == 'A' ||

@@ -1,4 +1,4 @@
-package com.naomi.basics.inheritance;
+package com.naomi.basics.classes.inheritance;
 
 public class Circle extends Shape{
 	

@@ -1,4 +1,4 @@
-package com.naomi.basics.inheritance;
+package com.naomi.basics.classes.inheritance;
 
 public class Test {
 
@@ -31,7 +31,7 @@ public class Test {
 		
 		
 		Shape[] shapes = new Shape[3];
-		shapes[0] = new Shape("red");
+		shapes[0] = new Circle("black",2);
 		shapes[1] = new Rectangle("yellow", 2, 3);
 		shapes[2] = new Circle("black",7);
 		

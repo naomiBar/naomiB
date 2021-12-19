@@ -1,5 +1,7 @@
 package com.naomi.exercises;
 
+import java.util.Arrays;
+
 public class Lab9 {
 
 	public static void main(String[] args) {
@@ -9,9 +11,7 @@ public class Lab9 {
 			arr[i] = (int)(Math.random()*101); //0-100
 		}
 		System.out.print("all the numbers: ");
-		for (int i : arr) {
-			System.out.print(i + " ");
-		}
+		System.out.println(Arrays.toString(arr));
 		
 		
 		
