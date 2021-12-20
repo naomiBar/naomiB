@@ -1,13 +1,13 @@
 package com.naomi.projects.bank;
 
-public class Client {
+public abstract class Client {
 
 	private int id;
 	private String name;
 	private float balance;
 	private Account[] accounts = new Account[5];
-	private float commissionRate = 0;
-	private float interestRate = 0;
+	protected float commissionRate = 0;
+	protected float interestRate = 0;
 	private Logger logger;
 
 	public Client(int id, String name, float balance) {
@@ -57,6 +57,7 @@ public class Client {
 		for (int i = 0; i < accounts.length; i++) {
 			if (accounts[i] == null) {
 				accounts[i] = account;
+				return;
 			}
 		}
 	}
@@ -78,8 +79,9 @@ public class Client {
 	 */
 	public void removeAccount(int id) {
 		for (int i = 0; i < accounts.length; i++) {
-			if (accounts[i].getId() == id) {
+			if (accounts[i] != null && accounts[i].getId() == id) {
 				accounts[i] = null;
+				return;
 			}
 		}
 	}

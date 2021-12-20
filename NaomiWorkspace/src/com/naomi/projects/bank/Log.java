@@ -15,7 +15,10 @@ public class Log {
 		this.amount = amount;
 	}
 
+	
 	public String getData() {
-		return "";
+		return "Log [timestamp=" + timestamp + ", clientId=" + clientId + ", description=" + description + ", amount="
+				+ amount + "]";
 	}
+
 }

@@ -9,8 +9,9 @@ public class Logger {
 		this.driverName = driverName;
 	}
 
+	//implement to print Log on screen
 	public void log(Log log) {
-		//implement to print Log on screen
+		System.out.println(log.getData());
 	}
 	
 	public Log[] getLogs() {

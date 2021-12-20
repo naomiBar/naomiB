@@ -7,8 +7,13 @@ public class Bank {
 	// private accountUpdater ;
 	private Logger logger;
 
-	public Bank() {
-		super();
+	private Bank() {
+	}
+
+	private static Bank instance = new Bank();
+
+	public static Bank getInstance() {
+		return instance;
 	}
 
 	public float getBalance() {
@@ -36,6 +41,7 @@ public class Bank {
 		for (int i = 0; i < clients.length; i++) {
 			if (clients[i] == null) {
 				clients[i] = client;
+				return;
 			}
 		}
 	}
@@ -46,8 +52,9 @@ public class Bank {
 	 */
 	public void removeClient(int id) {
 		for (int i = 0; i < clients.length; i++) {
-			if (clients[i].getId() == id) {
+			if (clients[i] != null && clients[i].getId() == id) {
 				clients[i] = null;
+				return;
 			}
 		}
 	}
@@ -63,5 +70,25 @@ public class Bank {
 
 	public void startAccountUpdater() {
 
+	}
+
+	/*
+	 * to update that bank balance by adding commission every-time client perform
+	 * deposit and withdraw operations.
+	 */
+	public void addCommission(float commission) {
+
+	}
+
+	/*
+	 * prints the client details using the new toString() implementation you'll
+	 * create in the next part
+	 */
+	public void printClientList() {
+		for (Client client : clients) {
+			if(client!=null) {
+				System.out.println(client);
+			}
+		}
 	}
 }
