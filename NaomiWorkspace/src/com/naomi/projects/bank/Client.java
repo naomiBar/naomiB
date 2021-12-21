@@ -6,8 +6,8 @@ public abstract class Client {
 	private String name;
 	private float balance;
 	private Account[] accounts = new Account[5];
-	protected float commissionRate = 0;
-	protected float interestRate = 0;
+	protected float commissionRate = 0; // עמלה
+	protected float interestRate = 0; // ריבית
 	private Logger logger;
 
 	public Client(int id, String name, float balance) {
@@ -57,6 +57,9 @@ public abstract class Client {
 		for (int i = 0; i < accounts.length; i++) {
 			if (accounts[i] == null) {
 				accounts[i] = account;
+				Log log = new Log(System.currentTimeMillis(), this.id, "add acoount" + account.getId(),
+						account.getBalance());
+				logger.log(log);
 				return;
 			}
 		}
@@ -80,6 +83,10 @@ public abstract class Client {
 	public void removeAccount(int id) {
 		for (int i = 0; i < accounts.length; i++) {
 			if (accounts[i] != null && accounts[i].getId() == id) {
+				this.balance += accounts[i].getBalance();
+				Log log = new Log(System.currentTimeMillis(), this.id, "remove account " + id,
+						accounts[i].getBalance());
+				logger.log(log);
 				accounts[i] = null;
 				return;
 			}
@@ -92,6 +99,17 @@ public abstract class Client {
 	 * commission rate (which is now zero). Use the commission data member in your
 	 * calculation. Log these oprations.
 	 */
+	public void deposit(float amount) {
+		balance += amount;
+		Log log = new Log(System.currentTimeMillis(), this.id, "deposit to balance", amount);
+		logger.log(log);
+	}
+
+	public void withdraw(float amount) {
+		balance -= amount;
+		Log log = new Log(System.currentTimeMillis(), this.id, "withdraw from balance", amount);
+		logger.log(log);
+	}
 
 	/*
 	 * run over the accounts, calculate the amount to add according to the client
