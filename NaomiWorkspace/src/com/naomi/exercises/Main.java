@@ -49,20 +49,25 @@ public class Main {
 		System.out.println("max1: "  + max1);
 		System.out.println("max2: "  + max2);
 		
-		int[] arr = new int[5];
+		
+		int[] arr = new int[20];
+		System.arraycopy(newArr1, 0, arr, 0, 10);
+		System.arraycopy(newArr2, 0, arr, 10, 10);
 		System.out.println("arr: " + Arrays.toString(arr));
-		for (int i = 0; i < newArr1.length; i++) {
-			for (int j = 0; j < arr.length; j++) {
-				if(newArr1[i]  >= arr[j]) {
-					int temp = arr[j];
-					arr[j] = newArr1[i];
-					if(j<4) {
-						arr[++j] = temp;						
-					}
-				}
+		
+		Arrays.sort(arr);
+		System.out.println("arr after sort: " + Arrays.toString(arr));
+		for (int i = 0; i < arr.length-1; i++) {
+			if(arr[i] == arr[i+1]) {
+				arr[i] = 0;
 			}
 		}
-		System.out.println("arr: " + Arrays.toString(arr));
+		Arrays.sort(arr);
+		System.out.println("arr after sort2: " + Arrays.toString(arr));
+		
+		int[] newArr = new int[5];
+		System.arraycopy(arr, 15, newArr, 0, 5);
+		System.out.println("new arr - 5 biggest: " + Arrays.toString(newArr));
 		
 	}
 
