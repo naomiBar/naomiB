@@ -1,5 +1,7 @@
 package com.naomi.projects.bank;
 
+import java.util.Objects;
+
 public class Account {
 	
 	private int id;
@@ -22,8 +24,17 @@ public class Account {
 	public void setBalance(float balance) {
 		this.balance = balance;
 	}
-	
-	
-	
 
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Account))
+			return false;
+		Account other = (Account) obj;
+		return id == other.id;
+	}
+
+	
+	
+	
 }

@@ -24,6 +24,7 @@ public class Lab10 {
 		System.out.println("===============");
 		System.out.println("   Ex2:");
 		int[] arr2 = { 1, 2, 5, 1, 6, 1, 5, 4, 8 };
+		System.out.println(Arrays.toString(arr2));
 		int[] newArr = new int[arr2.length];
 		int count = 0;
 		for (int i = 0; i < arr2.length; i++) {

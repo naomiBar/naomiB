@@ -1,13 +1,17 @@
 package com.naomi.projects.bank;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class Bank {
 
-	private Client[] clients = new Client[100];
+	private List<Client> clients;
 	private float balance; // bank monies from charged commissions.
 	// private accountUpdater ;
 	private Logger logger;
 
 	private Bank() {
+		clients = new LinkedList<>();
 	}
 
 	private static Bank instance = new Bank();
@@ -26,11 +30,11 @@ public class Bank {
 	 * Client.getFortune() method of each client.
 	 */
 	public float getTotalFortune() {
-		int sum = 0;
-		for (int i = 0; i < clients.length; i++) {
-			sum += clients[i].getFortune();
+		float fortune = 0;
+		for (Client client : clients) {
+			fortune += client.getFortune();
 		}
-		return sum;
+		return fortune;
 	}
 
 	/*
@@ -38,12 +42,10 @@ public class Bank {
 	 * and place the Client where the first null value is found.
 	 */
 	public void addClient(Client client) {
-		for (int i = 0; i < clients.length; i++) {
-			if (clients[i] == null) {
-				clients[i] = client;
-				return;
-			}
-		}
+		clients.add(client);
+		Log log = new Log(System.currentTimeMillis(), client.getId(), "add client", client.getBalance());
+		Logger.log(log);
+		
 	}
 
 	/*
@@ -51,15 +53,17 @@ public class Bank {
 	 * value to the array[position]). Log the operation
 	 */
 	public void removeClient(int id) {
-		for (int i = 0; i < clients.length; i++) {
-			if (clients[i] != null && clients[i].getId() == id) {
-				clients[i] = null;
+		for (Client client : clients) {
+			if(client.getId() == id) {
+				clients.remove(client);
+				Log log = new Log(System.currentTimeMillis(), id, "remove client ", client.getBalance());
+				Logger.log(log);
 				return;
 			}
 		}
 	}
 
-	public Client[] getClients() {
+	public List<Client> getClients() {
 		return clients;
 	}
 
@@ -77,7 +81,7 @@ public class Bank {
 	 * deposit and withdraw operations.
 	 */
 	public void addCommission(float commission) {
-
+		this.balance += commission;
 	}
 
 	/*
@@ -86,9 +90,7 @@ public class Bank {
 	 */
 	public void printClientList() {
 		for (Client client : clients) {
-			if(client!=null) {
-				System.out.println(client);
-			}
+			System.out.println(client);
 		}
 	}
 }

@@ -1,5 +1,7 @@
 package com.naomi.projects.bank;
 
+import java.util.List;
+
 public class Logger {
 	
 	private String driverName;
@@ -10,12 +12,13 @@ public class Logger {
 	}
 
 	//implement to print Log on screen
-	public void log(Log log) {
+	public static void log(Log log) {
 		System.out.println(log.getData());
 	}
 	
-	public Log[] getLogs() {
+	public List<Log> getLogs() {
 		return null;
+		
 	}
 
 }

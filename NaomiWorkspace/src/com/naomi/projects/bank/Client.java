@@ -1,11 +1,14 @@
 package com.naomi.projects.bank;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public abstract class Client {
 
 	private int id;
 	private String name;
 	private float balance;
-	private Account[] accounts = new Account[5];
+	private List<Account> accounts = new LinkedList<>();
 	protected float commissionRate = 0; // עמלה
 	protected float interestRate = 0; // ריבית
 	private Logger logger;
@@ -43,7 +46,7 @@ public abstract class Client {
 		return id;
 	}
 
-	public Account[] getAccounts() {
+	public List<Account> getAccounts() {
 		return accounts;
 	}
 
@@ -54,22 +57,17 @@ public abstract class Client {
 	 * found.
 	 */
 	public void addAccount(Account account) {
-		for (int i = 0; i < accounts.length; i++) {
-			if (accounts[i] == null) {
-				accounts[i] = account;
-				Log log = new Log(System.currentTimeMillis(), this.id, "add acoount" + account.getId(),
-						account.getBalance());
-				logger.log(log);
-				return;
-			}
-		}
+		accounts.add(account);
+		Log log = new Log(System.currentTimeMillis(), this.id, "add acoount " + account.getId(),
+				account.getBalance());
+		Logger.log(log);
 	}
 
 	/* returns the account of the specified id or null if does not exist */
 	public Account getAccount(int id) {
-		for (int i = 0; i < accounts.length; i++) {
-			if (accounts[i].getId() == id) {
-				return accounts[i];
+		for (Account account : accounts) {
+			if(account.getId() == id) {
+				return account;
 			}
 		}
 		return null;
@@ -81,13 +79,13 @@ public abstract class Client {
 	 * Log the operation
 	 */
 	public void removeAccount(int id) {
-		for (int i = 0; i < accounts.length; i++) {
-			if (accounts[i] != null && accounts[i].getId() == id) {
-				this.balance += accounts[i].getBalance();
+		for (Account account : accounts) {
+			if(account.getId() == id) {
+				this.balance += account.getBalance();
 				Log log = new Log(System.currentTimeMillis(), this.id, "remove account " + id,
-						accounts[i].getBalance());
-				logger.log(log);
-				accounts[i] = null;
+						account.getBalance());
+				Logger.log(log);
+				accounts.remove(account);
 				return;
 			}
 		}
@@ -101,14 +99,21 @@ public abstract class Client {
 	 */
 	public void deposit(float amount) {
 		balance += amount;
+//		balance -= commissionRate * amount;
 		Log log = new Log(System.currentTimeMillis(), this.id, "deposit to balance", amount);
-		logger.log(log);
+		Logger.log(log);
 	}
 
-	public void withdraw(float amount) {
-		balance -= amount;
-		Log log = new Log(System.currentTimeMillis(), this.id, "withdraw from balance", amount);
-		logger.log(log);
+	public void withdraw(float amount) throws WithdrawException {
+		if(amount<=this.balance) {
+			balance -= amount;
+			Bank.getInstance().addCommission(commissionRate * amount);
+			balance -= commissionRate * amount;
+			Log log = new Log(System.currentTimeMillis(), this.id, "withdraw from balance", amount);
+			Logger.log(log);			
+		}else {
+			throw new WithdrawException("the amount to withdraw is greater than the current balance", this.id, this.balance, amount);
+		}
 	}
 
 	/*
@@ -117,11 +122,31 @@ public abstract class Client {
 	 * interest data member in your calculation. Log this operation.
 	 */
 	public void autoUpdateAccounts() {
-
+		for (Account account : accounts) {
+			account.setBalance(account.getBalance() + interestRate);
+			Log log = new Log(System.currentTimeMillis(), this.id,
+					"update the amount of accoount " + account.getId(), account.getBalance());
+			Logger.log(log);
+		}
 	}
 
 	/* returns the sum of client balance + total account balance. */
 	public float getFortune() {
-		return balance;
+		float fortune = this.balance;
+		for (Account account : accounts) {
+			fortune += account.getBalance();
+		}
+		return fortune;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if(!(obj instanceof Client)) {
+			return false;
+		}
+		Client other = (Client)obj;
+		return this.id == other.id;
+	}	
+	
+	
 }

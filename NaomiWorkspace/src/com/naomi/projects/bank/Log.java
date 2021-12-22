@@ -1,5 +1,7 @@
 package com.naomi.projects.bank;
 
+import java.util.Date;
+
 public class Log {
 	
 	private long timestamp;
@@ -17,7 +19,8 @@ public class Log {
 
 	
 	public String getData() {
-		return "Log [timestamp=" + timestamp + ", clientId=" + clientId + ", description=" + description + ", amount="
+		Date date = new Date(timestamp);
+		return "Log [date=" + date + ", clientId=" + clientId + ", description=" + description + ", amount="
 				+ amount + "]";
 	}
 
