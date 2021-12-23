@@ -1,4 +1,4 @@
-package com.naomi.exercises;
+package com.naomi.exercises.flowControl;
 
 import java.util.Arrays;
 
@@ -6,6 +6,7 @@ public class Main {
 
 	public static void main(String[] args) {
 
+		// exercise 1
 		int[] num1 = new int[25];
 		int[] num2 = new int[25];
 		
@@ -15,9 +16,11 @@ public class Main {
 			
 		}
 		
+		// exercise 2
 		System.out.println("num1: " + Arrays.toString(num1));
 		System.out.println("num2: " + Arrays.toString(num2));
 		
+		// exercise 3
 		int[] newArr1 = new int[10];
 		int[] newArr2 = new int[10];
 		
@@ -35,21 +38,14 @@ public class Main {
 		System.out.println("newArr1: " + Arrays.toString(newArr1));
 		System.out.println("newArr2: " + Arrays.toString(newArr2));
 		
-		int max1 = 0, max2 = 0;
+		Arrays.sort(newArr1);
+		Arrays.sort(newArr2);
 		
-		for (int i = 0; i < newArr1.length; i++) {
-			if(newArr1[i]>max1) {
-				max1 = newArr1[i];
-			}
-			if(newArr2[i]>max2) {
-				max2 = newArr2[i];
-			}
-			
-		}
-		System.out.println("max1: "  + max1);
-		System.out.println("max2: "  + max2);
+		System.out.println("max1: "  + newArr1[9]);
+		System.out.println("max2: "  + newArr2[9]);
 		
 		
+		// exercise 4
 		int[] arr = new int[20];
 		System.arraycopy(newArr1, 0, arr, 0, 10);
 		System.arraycopy(newArr2, 0, arr, 10, 10);
@@ -67,8 +63,8 @@ public class Main {
 		
 		int[] newArr = new int[5];
 		System.arraycopy(arr, 15, newArr, 0, 5);
-		System.out.println("new arr - 5 biggest: " + Arrays.toString(newArr));
 		
+		// exercise 5
+		System.out.println("new arr - 5 biggest: " + Arrays.toString(newArr));
 	}
-
 }

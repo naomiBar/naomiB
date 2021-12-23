@@ -1,4 +1,4 @@
-package com.naomi.exercises;
+package com.naomi.exercises.labs;
 
 public class Lab5 {
 
