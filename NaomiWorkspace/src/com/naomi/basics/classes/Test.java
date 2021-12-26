@@ -1,6 +1,6 @@
 package com.naomi.basics.classes;
 
-import a.Point;
+import com.naomi.basics.classes.point.Point;
 
 public class Test {
 

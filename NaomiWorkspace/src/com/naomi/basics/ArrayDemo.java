@@ -2,7 +2,7 @@ package com.naomi.basics;
 
 import java.util.Arrays;
 
-import a.Point;
+import com.naomi.basics.classes.point.Point;
 
 public class ArrayDemo {
 

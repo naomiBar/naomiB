@@ -1,6 +1,5 @@
 package com.naomi.projects.dictionary;
 
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -8,19 +7,7 @@ import java.util.TreeMap;
 
 public class Dictionary {
 
-	private Map<String, String> map;
-	
-	private Dictionary() {
-		map = new TreeMap<>();
-	}
-
-	private static Dictionary instance = new Dictionary();
-
-	public static Dictionary getInstance() {
-		return instance;
-	}
-
-
+	private Map<String, String> map = new TreeMap<>();
 	
 	public void addEntry(String key, String value) {
 		map.put(key, value);
@@ -41,5 +28,4 @@ public class Dictionary {
 	public Set<String> getAllEntriesSorted() {
 		return map.keySet();
 	}
-	
 }

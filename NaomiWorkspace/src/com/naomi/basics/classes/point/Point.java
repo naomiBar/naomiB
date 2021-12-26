@@ -1,4 +1,4 @@
-package a;
+package com.naomi.basics.classes.point;
 
 public class Point {
 	private int x; //0-1000
