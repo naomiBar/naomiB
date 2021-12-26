@@ -11,42 +11,42 @@ public class CalulatorSystem {
 	public void start() {
 		this.systemOn = true;
 		while (systemOn) {
-			System.out.print("Enter exercise: ");
-//			showMenu();
+			System.out.print("Enter exercise(q-to quit): ");
 			String exercise = sc.nextLine();
 			char[] vals = exercise.toCharArray();
-			this.calulator.setRes(vals[0]-'0');
-			switch (vals[1]) {
-			case '+':
-				this.calulator.add(vals[2]);
-				break;
-			case '-':
-				this.calulator.sub(vals[2]);
-				break;
-			case '*':
-				this.calulator.mul(vals[2]);
-				break;
-			case '/':
-				try {
-					this.calulator.div(vals[2]);
-				} catch (CalculatorException e) {
-					System.err.println("ERROR!! " + e.getMessage());
+			
+			if (vals[0] != 'q') {
+				this.calulator.setRes(Double.parseDouble(Character.toString(vals[0])));
+				double num = Double.parseDouble(Character.toString(vals[2]));
+
+				switch (vals[1]) {
+				case '+':
+					this.calulator.add(num);
+					System.out.println(vals[0] + " + " + vals[2] + " = " + Double.toString(this.calulator.getRes()));
+					break;
+				case '-':
+					this.calulator.sub(num);
+					System.out.println(vals[0] + " - " + vals[2] + " = " + Double.toString(this.calulator.getRes()));
+					break;
+				case '*':
+					this.calulator.mul(num);
+					System.out.println(vals[0] + " * " + vals[2] + " = " + Double.toString(this.calulator.getRes()));
+					break;
+				case '/':
+					try {
+						this.calulator.div(num);
+						System.out
+								.println(vals[0] + " / " + vals[2] + " = " + Double.toString(this.calulator.getRes()));
+					} catch (CalculatorException e) {
+						System.err.println("ERROR!! " + e.getMessage());
+					}
+					break;
 				}
-				break;
-//			case "=":
-//				System.out.print("the result: "  + this.calulator.getRes());
-//				break;
-//			case "cl":
-//				this.calulator.clear();
-//				break;
-//			case "q":
-//				this.systemOn = false;
-//				this.sc.close();
-//				break;
-			default:
-//				System.out.println(command + " is not a supported action");
+			} else {
+				this.systemOn = false;
+				this.sc.close();
+				System.out.println("\n\t BYE! :)");
 			}
-			System.out.println(vals[0] + "" + vals[1] + vals[2] + "=" + (this.calulator.getRes()-'0'));
 		}
 	}
 
@@ -62,5 +62,4 @@ public class CalulatorSystem {
 		System.out.print("your choice: ");
 	}
 
-	
 }

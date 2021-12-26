@@ -17,14 +17,10 @@ public class Ex_Set {
 		System.out.println("the set: " + set1);
 
 		Iterator<String> it = set1.iterator();
-		for (int i = 0; it.hasNext(); i++) {
-			String curr = it.next();
-			if (i == 2) {
-				System.out.println(curr);
-				break;
-			}
-		}
-
+		it.next();
+		it.next();
+		System.out.println(it.next());
+		
 		System.out.println("=================");
 
 		// exercise 5
