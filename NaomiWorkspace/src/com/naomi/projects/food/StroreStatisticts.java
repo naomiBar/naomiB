@@ -18,10 +18,12 @@ public class StroreStatisticts {
 		showWeight(store.getVegetables());
 		
 		System.out.println("\n\t Fruits");
-		printFruits(store.getFruits());
+		printFoods(store.getFruits());
 		
 		System.out.println("\n\t Vegetables");
-		printFruits(store.getVegetables());
+		printFoods(store.getVegetables());
+		
+		
 	}
 
 	private static void createStore(Store store) {
@@ -65,7 +67,7 @@ public class StroreStatisticts {
 		return sum;
 	}
 
-	private static void printFruits(Food[] foods) {
+	private static void printFoods(Food[] foods) {
 		for (int i = 0; i < amountFoods(foods); i++) {
 			System.out.println(foods[i]);			
 		}
