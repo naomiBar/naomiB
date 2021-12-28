@@ -1,14 +1,18 @@
-package food;
+package com.naomi.projects.food;
 
 public abstract class Food {
 
+	public enum Taste{
+		SWEET, SPICY, BITTER, SOUR;
+	}
+	
 	private double weight;
-	private String taste;
+	private Taste taste;
 	
 	public Food() {
 	}
 	
-	public Food(double weight, String taste) {
+	public Food(double weight, Taste taste) {
 		this.weight = weight;
 		this.taste = taste;
 	}
@@ -21,11 +25,11 @@ public abstract class Food {
 		this.weight = weight;
 	}
 
-	public String getTaste() {
+	public Taste getTaste() {
 		return taste;
 	}
 
-	public void setTaste(String taste) {
+	public void setTaste(Taste taste) {
 		this.taste = taste;
 	}
 

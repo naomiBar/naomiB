@@ -1,4 +1,4 @@
-package food;
+package com.naomi.projects.food;
 
 public class Store {
 

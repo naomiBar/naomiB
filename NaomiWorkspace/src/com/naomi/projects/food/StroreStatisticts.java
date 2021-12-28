@@ -1,5 +1,6 @@
-package food;
+package com.naomi.projects.food;
 
+import com.naomi.projects.food.Food.Taste;
 
 public class StroreStatisticts {
 
@@ -24,11 +25,15 @@ public class StroreStatisticts {
 	}
 
 	private static void createStore(Store store) {
-		String[] tastes = { "sweet", "spicy", "bitter", "sour" };
-		for (int i = 0; i < 100; i++) {
+		int lenFruits = store.getFruits().length;
+		int lenVegetables = store.getVegetables().length;
+		for (int i = 0; i < lenFruits + lenVegetables; i++) {
+			
 			double weight = (Math.random() * 6);
-			String taste = tastes[(int) (Math.random() * 4)];
-			if ((Math.random()) > 0.5) {
+			int lenTaste  = Taste.values().length;
+			Taste taste = Taste.values()[(int) (Math.random() * lenTaste)];
+			
+			if (i < lenFruits) {
 				Fruit fruit;
 				if ((Math.random()) > 0.5) {
 					fruit = new Apple(weight, taste);
@@ -36,7 +41,8 @@ public class StroreStatisticts {
 					fruit = new Strawbery(weight, taste);
 				}
 				store.addFruit(fruit);
-			} else {
+			} 
+			else {
 				Vegetable vegetable;
 				if ((Math.random()) > 0.5) {
 					vegetable = new Carrot(weight, taste);
