@@ -28,21 +28,25 @@ public class Main {
 	}
 
 	private static void initializeCountry(Country country) {
-
-		int lenCars = 5;
 		for (int i = 0; i < country.getHighways().length; i++) {
-//			int lenCars = country.getHighways()[i].getCars().length;
+			int lenCars = (int)(Math.random() * country.getHighways()[i].getCars().length);
+			System.out.println("lenCars: " + lenCars);
 			for (int j = 0; j < lenCars; j++) {
 				int speed = (int) (Math.random() * 151);
 				Car car;
 				if (Math.random() > 0.5) {
-					car = new FamilyCar((j + 1), speed);
+					car = new FamilyCar(j + 1);
+					if(!car.setSpeed(speed)) {
+						car = null;
+					}
 				} else {
-					car = new SportsCar((j + 1), speed);
+					car = new SportsCar((j + 1));
+					if(!car.setSpeed(speed)) {
+						car = null;
+					}
 				}
 				country.getHighways()[i].addCar(car);
 			}
-			lenCars++;
 		}
 	}
 
@@ -80,7 +84,10 @@ public class Main {
 				count++;
 			}
 		}
-		return sum/count;
+		if(count>0) {
+			return sum/count;			
+		}
+		return 0;
 	}
 	
 	private static double avgSpeed(Country country) {

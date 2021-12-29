@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class Highway {
 	
 	private String name;
-	private Car[] cars = new Car[10];
+	private Car[] cars = new Car[50];
 	
 	
 	public Highway(String name) {

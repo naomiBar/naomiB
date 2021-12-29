@@ -8,9 +8,8 @@ public abstract class Car {
 	private int speed; //0-110
 	
 	
-	public Car(int number, int speed) {
+	public Car(int number) {
 		this.number = number;
-		setSpeed(speed);
 	}
 
 
@@ -29,10 +28,12 @@ public abstract class Car {
 	}
 
 
-	public void setSpeed(int speed) {
+	public boolean setSpeed(int speed) {
 		if(speed>=0 && speed<=110) {
 			this.speed = speed;
+			return true;
 		}
+		return false;
 	}
 	
 	@Override
