@@ -39,6 +39,7 @@ public class SchoolStatistics {
 		
 	}
 
+	
 	private static Student createStudent() {
 		Name name = Person.Name.values()[(int) (Math.random() * Person.LEN_NAMES)];
 		int age = (int) (Math.random() * Person.MAX_AGE - Person.MIN_AGE + 1) + Person.MIN_AGE;
@@ -52,6 +53,7 @@ public class SchoolStatistics {
 		return new Student(name, age, grades);
 	}
 
+	
 	private static Teacher createTeacher() {
 		Name name = Person.Name.values()[(int) (Math.random() * Person.LEN_NAMES)];
 		int age = (int) (Math.random() * Person.MAX_AGE - Person.MIN_AGE + 1) + Person.MIN_AGE;
@@ -60,9 +62,11 @@ public class SchoolStatistics {
 		return new Teacher(name, age, profession);
 	}
 
+	
 	private static void createSchool(School school) {
 		for (int i = 0; i < School.MAX_CLASSROOMS; i++) {
-			Student[] students = new Student[ClassRoom.MAX_STUDENTS];
+			int lenStudents = (int)(Math.random() * (ClassRoom.MAX_STUDENTS - 10 + 1)) + 10; //10-15
+			Student[] students = new Student[lenStudents];
 			for (int j = 0; j < students.length; j++) {
 				students[j] = createStudent();
 			}
@@ -70,12 +74,14 @@ public class SchoolStatistics {
 		}
 	}
 
+	
 	private static void showSchool(School school) {
 		for(int i=0; i<School.MAX_CLASSROOMS; i++) {
 			System.out.println(school.getClassRooms()[i]);
 		}
 	}
 
+	
 	private static void showAvgScoresOfClassRoom(School school) {
 		for (int i = 0; i < School.MAX_CLASSROOMS; i++) {
 			System.out.println("average of " + school.getClassRooms()[i].getName() +
@@ -83,6 +89,7 @@ public class SchoolStatistics {
 		}
 	}
 
+	
 	private static void showAvgScoresForProfessionOfClassRoom(School school) {
 		for (int i = 0; i < School.MAX_CLASSROOMS; i++) {
 			System.out.println("avgScores of " + school.getClassRooms()[i].getName() + ":");
@@ -94,6 +101,7 @@ public class SchoolStatistics {
 		}
 	}
 	
+	
 	private static void showAvgScoresForProfessionOfSchool(School school) {
 		System.out.println("avgScores of school:");
 		for(int i=0; i<Grade.LEN_PROFESSIONS; i++) {
@@ -103,27 +111,29 @@ public class SchoolStatistics {
 		}
 	}
 
+	
 	private static int[] amountStudents20_30(School school) {
 		int[] arr = new int[2]; //{amount,avgScores}
 		
 		for(int i=0; i<School.MAX_CLASSROOMS; i++) {
-			for(int j=0; j<ClassRoom.MAX_STUDENTS; j++) {
-				int ageStudent = school.getClassRooms()[i].getStudents()[j].getAge();
-				if(ageStudent >= 20 && ageStudent <= 30) {
-					arr[0]++;
-					arr[1] += school.getClassRooms()[i].getStudents()[j].avgScores();
-				}
+			for(int j=0; j<school.getClassRooms()[i].getStudents().length; j++) {
+					int ageStudent = school.getClassRooms()[i].getStudents()[j].getAge();
+					if(ageStudent >= 20 && ageStudent <= 30) {
+						arr[0]++;
+						arr[1] += school.getClassRooms()[i].getStudents()[j].avgScores();
+					}
 			}
 		}
 		arr[1] = arr[1] / arr[0];
 		return arr;
 	}
 
+	
 	private static int[] amountStudents31(School school) {
 		int[] arr = new int[2]; //{amount,avgScores}
 		
 		for(int i=0; i<School.MAX_CLASSROOMS; i++) {
-			for(int j=0; j<ClassRoom.MAX_STUDENTS; j++) {
+			for(int j=0; j<school.getClassRooms()[i].getStudents().length; j++) {
 				int ageStudent = school.getClassRooms()[i].getStudents()[j].getAge();
 				if(ageStudent >= 31) {
 					arr[0]++;
@@ -135,10 +145,11 @@ public class SchoolStatistics {
 		return arr;
 	}
 
+	
 	private static double avgAgesOfStudents(School school) {
 		int sum = 0, count = 0;
 		for(int i=0; i<School.MAX_CLASSROOMS; i++) {
-			for(int j=0; j<ClassRoom.MAX_STUDENTS; j++) {
+			for(int j=0; j<school.getClassRooms()[i].getStudents().length; j++) {
 				int ageStudent = school.getClassRooms()[i].getStudents()[j].getAge();
 				sum += ageStudent;
 				count++;
@@ -146,6 +157,7 @@ public class SchoolStatistics {
 		}
 		return sum / count;
 	}
+	
 	
 	private static void showAmountTeachersForProfession(School school) {
 		System.out.println("showAmountTeachers:");
@@ -156,11 +168,12 @@ public class SchoolStatistics {
 		}
 	}
 	
+	
 	private static Student[] teamSport(School school) {
 		Student[] students = new Student[School.MAX_CLASSROOMS * ClassRoom.MAX_STUDENTS];
 		int count = 0;
 		for (int i = 0; i < School.MAX_CLASSROOMS; i++) {
-			for (int j = 0; j < ClassRoom.MAX_STUDENTS; j++) {
+			for (int j = 0; j < school.getClassRooms()[i].getStudents().length; j++) {
 				for (int h = 0; h < Grade.LEN_PROFESSIONS; h++) {
 					Profession professionStudent = school.getClassRooms()[i].getStudents()[j].getGrades()[h].getProfession();
 					int scoreProfession = school.getClassRooms()[i].getStudents()[j].getGrades()[h].getScore();
@@ -173,6 +186,7 @@ public class SchoolStatistics {
 		return students;
 	}
 
+	
 	private static void showTeamSport(Student[] teamSport) {
 		for (Student student : teamSport) {
 			if(student != null) {

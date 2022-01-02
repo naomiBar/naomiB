@@ -3,7 +3,8 @@ package com.naomi.projects.school;
 public abstract class Person {
 
 	public enum Name{
-		NAOMI, ODEL, DAN, RON, DOR, DAVID, SARAH, MIRI, SHACHAR, NOA, MICHAL, NOAM;
+		NAOMI, ODEL, DAN, RON, DOR, DAVID, SARAH, MIRI, SHACHAR,
+		NOA, MICHAL, NOAM, LIEL, ADI, TAIR, SHALEV, TAL, MOR;
 	}
 	public static final int LEN_NAMES = Name.values().length;
 	

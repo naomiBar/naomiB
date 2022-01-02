@@ -1,16 +1,16 @@
 package com.naomi.threads;
 
-public class MyThreadsTest {
+public class MyThreadTest {
 
 	public static void main(String[] args) {
 		//3)create an object
-		MyThreads thread = new MyThreads("Thread");
+		MyThread thread = new MyThread("Thread");
 		thread.start(); //start run() in the thread
 		
 		//array of Threads
-		MyThreads t1 = new MyThreads("t1");
-		MyThreads t2 = new MyThreads("t2");
-		MyThreads t3 = new MyThreads("t3");
+		MyThread t1 = new MyThread("t1");
+		MyThread t2 = new MyThread("t2");
+		MyThread t3 = new MyThread("t3");
 		Thread[] threads = {t1,t2,t3};
 		for (Thread t : threads) {
 			t.start();
