@@ -1,4 +1,4 @@
-package com.naomi.jdbc;
+package com.naomi.JDBC;
 
 import java.sql.Driver;
 import java.sql.DriverManager;

@@ -1,4 +1,4 @@
-package com.naomi.jdbc;
+package com.naomi.JDBC;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,7 +16,7 @@ public class CreateJDBCConnection {
 		 	3) user password */
 		String dbUrl = "jdbc:mysql://localhost:3306/db?createDatabaseIfNotExist=true";
 		String user = "root";
-		String password = "1234";
+		String password = "Nbar2000";
 		
 		/* to get a Connection object we need DriverManager:
 			Driver - database implementation

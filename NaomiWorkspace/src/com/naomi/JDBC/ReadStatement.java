@@ -1,4 +1,4 @@
-package com.naomi.jdbc;
+package com.naomi.JDBC;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -13,7 +13,7 @@ public class ReadStatement {
 
 		String dbUrl = "jdbc:mysql://localhost:3306/db?createDatabaseIfNotExist=true";
 		String user = "root";
-		String password = "1234";
+		String password = "Nbar2000";
 		
 		try(Connection con = DriverManager.getConnection(dbUrl, user, password)){
 			Statement stmt = con.createStatement();
