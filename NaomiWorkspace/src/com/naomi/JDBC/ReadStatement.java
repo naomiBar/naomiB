@@ -10,10 +10,10 @@ import java.sql.Statement;
 public class ReadStatement {
 
 	public static void main(String[] args) {
-
 		String dbUrl = "jdbc:mysql://localhost:3306/db?createDatabaseIfNotExist=true";
 		String user = "root";
-		String password = "Nbar2000";
+//		String password = "Nbar2000";
+		String password = "1234";
 		
 		try(Connection con = DriverManager.getConnection(dbUrl, user, password)){
 			Statement stmt = con.createStatement();
@@ -25,7 +25,7 @@ public class ReadStatement {
 			e.printStackTrace();
 		}
 	}
-
+	
 	private static void readPerson(Statement stmt) throws SQLException {
 		String sql = "select * from person";
 		ResultSet rs = stmt.executeQuery(sql);

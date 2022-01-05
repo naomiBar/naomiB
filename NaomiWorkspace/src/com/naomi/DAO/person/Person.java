@@ -1,4 +1,4 @@
-package com.naomi.DAO;
+package com.naomi.DAO.person;
 
 public class Person {
 	

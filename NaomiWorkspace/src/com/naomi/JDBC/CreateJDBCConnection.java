@@ -16,7 +16,8 @@ public class CreateJDBCConnection {
 		 	3) user password */
 		String dbUrl = "jdbc:mysql://localhost:3306/db?createDatabaseIfNotExist=true";
 		String user = "root";
-		String password = "Nbar2000";
+//		String password = "Nbar2000";
+		String password = "1234";
 		
 		/* to get a Connection object we need DriverManager:
 			Driver - database implementation
@@ -29,17 +30,17 @@ public class CreateJDBCConnection {
 			
 			//create the person table
 			String sqlCreate = "create table person(id int primary key auto_increment, name varchar(50))"; //define an sql as String
-//			statement.executeUpdate(sqlCreate); //execute the sql
+			statement.executeUpdate(sqlCreate); //execute the sql
 			
 			//insert 100 person to the person table
 			for(int i=0; i<100; i++) {
 				String sqlInsert = "insert into person values(0, 'person " + (i+1) + "')";
-//				statement.executeUpdate(sqlInsert);
+				statement.executeUpdate(sqlInsert);
 			}
 			
 			//change the name of person 1 to 'Naomi'
 			String sqlUpdate = "update person set name = 'Naomi' where id = 1";
-//			statement.executeUpdate(sqlUpdate);
+			statement.executeUpdate(sqlUpdate);
 		
 		} catch (SQLException e) {
 			e.printStackTrace();

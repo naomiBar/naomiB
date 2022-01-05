@@ -1,4 +1,4 @@
-package com.naomi.DAO;
+package com.naomi.DAO.person;
 
 
 import java.sql.Connection;
@@ -6,15 +6,27 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 // DAO - Data Access Object
-// CRUD actions using objects
+// CRUD - Create Read Update Delete: actions using objects
 public class PersonDao {
 
-	private String dbUrl = "jdbc:mysql://localhost:3306/db2";
+	private String dbUrl = "jdbc:mysql://localhost:3306/db_person?createDatabaseIfNotExist=true";
 	private String user = "root";
 	private String password = "1234";
 
+	// create
+	public void createTable() {
+		try (Connection con = DriverManager.getConnection(dbUrl, user, password)) {
+			Statement statement = con.createStatement();
+			String sqlCreate = "create table person(id int primary key, name varchar(50))"; //define an sql as String
+			statement.executeUpdate(sqlCreate);
+		} catch (SQLException e) {
+			throw new RuntimeException("create person table failed", e);
+		}
+	}
+	
 	// create
 	public void save(Person person) {
 		try (Connection con = DriverManager.getConnection(dbUrl, user, password)) {
