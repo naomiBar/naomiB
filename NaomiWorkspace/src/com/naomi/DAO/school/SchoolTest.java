@@ -4,8 +4,8 @@ public class SchoolTest {
 
 	public static void main(String[] args) {
 
-		String password = "1234";
-//		String password = "Nbar2000";
+//		String password = "1234";
+		String password = "Nbar2000";
 		try {
 			SchoolDao schoolDao = new SchoolDao(password,true);
 			StudentDao studentDao = new StudentDao(password,true);

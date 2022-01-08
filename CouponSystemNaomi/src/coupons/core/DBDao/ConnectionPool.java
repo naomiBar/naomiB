@@ -1,4 +1,4 @@
-package coupons.core.dao;
+package coupons.core.DBDao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -17,8 +17,8 @@ public class ConnectionPool {
 
 	private String dbUrl = "jdbc:mysql://localhost:3306/coupon_system";
 	private String user = "root";
-	private String password = "1234";
-//	private String password = "Nbar2000";
+//	private String password = "1234";
+	private String password = "Nbar2000";
 
 	private static ConnectionPool instance;
 
@@ -27,7 +27,7 @@ public class ConnectionPool {
 		for (int i = 0; i < SIZE; i++) {
 			Connection connection = DriverManager.getConnection(dbUrl, user, password);
 			connections.add(connection);
-			System.out.println(connection);
+//			System.out.println(connection);
 		}
 		this.isOpen = true;
 	}
@@ -67,6 +67,7 @@ public class ConnectionPool {
 	public synchronized void restoreConnection(Connection connection) {
 		this.connections.add(connection);
 		notify();
+		System.out.println("restoreConnection");
 	}
 	
 	public synchronized void closeAllConnections() throws CouponSystemException {
@@ -79,6 +80,7 @@ public class ConnectionPool {
 				e.printStackTrace();
 			}
 		}
+		System.out.println("hh");
 		for (Connection connection : connections) {
 			try {
 				connection.close();

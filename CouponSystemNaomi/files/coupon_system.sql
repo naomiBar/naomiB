@@ -33,4 +33,8 @@ create table CUSTOMERS_VS_COUPONS(
     `coupon_id` int,
     foreign key (`coupon_id`) references COUPONS(`id`),
     primary key(`customer_id`, `coupon_id`));
-    
+
+insert into COMPANIES values(0,'naomi','naomi@gmail','1234');
+select * from COMPANIES;
+delete from companies;
+select id from COMPANIES where `email` =  'naomi@gmail' AND `password` = '1234'
