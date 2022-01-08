@@ -11,6 +11,6 @@ public interface CompaniesDao {
 	public void addCompany(Company company) throws CouponSystemException;
 	public void updateCompany(Company company) throws CouponSystemException;
 	public void deleteCompany(int companyId) throws CouponSystemException;
-	public ArrayList<Company> getAllCompanies();
+	public ArrayList<Company> getAllCompanies() throws CouponSystemException;
 	public Company getOneCompany(int companyId) throws CouponSystemException;
 }

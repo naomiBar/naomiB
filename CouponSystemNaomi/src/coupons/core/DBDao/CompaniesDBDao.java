@@ -90,10 +90,23 @@ public class CompaniesDBDao implements CompaniesDao{
 	}
 
 	@Override
-	public ArrayList<Company> getAllCompanies() {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Company> getAllCompanies() throws CouponSystemException {
+		ArrayList<Company> companies = new ArrayList<>();
+		String sql = "select * from COMPANIES";
+		Connection con = connectionPool.getConnection();
+		try {
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			ResultSet rs = pstmt.executeQuery();
+			connectionPool.restoreConnection(con);
+			while (rs.next()) {
+				companies.add(new Company(rs.getInt("id"), rs.getString("name"), rs.getString("email"), rs.getString("password")));
+			}
+		} catch (SQLException e) {
+			throw new CouponSystemException("getAllCompanies failed", e);
+		}
+		return companies;
 	}
+	
 	@Override
 	public Company getOneCompany(int companyId) throws CouponSystemException {
 		String sql = "select * from COMPANIES where id = ?";

@@ -80,7 +80,6 @@ public class ConnectionPool {
 				e.printStackTrace();
 			}
 		}
-		System.out.println("hh");
 		for (Connection connection : connections) {
 			try {
 				connection.close();
