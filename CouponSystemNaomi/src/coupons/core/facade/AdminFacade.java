@@ -17,15 +17,15 @@ public class AdminFacade extends ClientFacade {
 	}
 
 	public void addCompany(Company company) throws CouponSystemException {
-		if (!companiesDao.isCompanyExistsName(company.getName())
-				&& !companiesDao.isCompanyExistsEmail(company.getEmail())) {
+		if (!companiesDao.isCompanyExistsByName(company.getName())
+				&& !companiesDao.isCompanyExistsByEmail(company.getEmail())) {
 			companiesDao.addCompany(company);
 		}
 	}
 
 	public void updateCompany(Company company) throws CouponSystemException {
-		if (companiesDao.isCompanyExistsId(company.getId()) 
-				&& companiesDao.isCompanyExistsName(company.getName())) {
+		if (companiesDao.isCompanyExistsById(company.getId()) 
+				&& companiesDao.isCompanyExistsByName(company.getName())) {
 			companiesDao.updateCompany(company);
 		}
 	}
@@ -35,36 +35,37 @@ public class AdminFacade extends ClientFacade {
 		couponsDao.deleteCouponsOfCompany(companyId);
 	}
 
+	public Company getOneCompany(int companyId) throws CouponSystemException {
+		return companiesDao.getOneCompany(companyId);
+	}
+	
 	public List<Company> getAllCompanies() throws CouponSystemException {
 		return companiesDao.getAllCompanies();
 	}
 
-	public Company getOneCompany(int companyId) throws CouponSystemException {
-		return companiesDao.getOneCompany(companyId);
-	}
-
 	public void addCustomer(Customer customer) throws CouponSystemException {
-		if(!customersDao.isCustomerExistsEmail(customer.getEmail())) {
+		if(!customersDao.isCustomerExistsByEmail(customer.getEmail())) {
 			customersDao.addCustomer(customer);
 		}
 	}
 
 	public void updateCustomer(Customer customer) throws CouponSystemException {
-		if(customersDao.isCustomerExistsId(customer.getId())) {
+		if(customersDao.isCustomerExistsById(customer.getId())) {
 			customersDao.updateCustomer(customer);
 		}
 	}
 
-	public void deleteCustomer(int customerId) {
-
+	public void deleteCustomer(int customerId) throws CouponSystemException {
+		customersDao.deleteCustomer(customerId);
+		customersDao.deleteCustomerOfCoupons(customerId);
 	}
 
-	public List<Customer> getAllCustomers() {
-		return null;
+
+	public Customer getOneCustomer(int customerId) throws CouponSystemException {
+		return customersDao.getOneCustomer(customerId);
 	}
 
-	public Customer getOneCustomer(int customerId) {
-		return null;
+	public List<Customer> getAllCustomers() throws CouponSystemException {
+		return customersDao.getAllCustomers();
 	}
-
 }

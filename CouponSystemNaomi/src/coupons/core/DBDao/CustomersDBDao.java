@@ -20,22 +20,6 @@ public class CustomersDBDao implements CustomersDao {
 	}
 
 	@Override
-	public boolean isCustomerExists(String email, String password) throws CouponSystemException {
-		String sql = "select id from CUSTOMERS where `email` =  ? AND `password` = ?";
-		Connection con = connectionPool.getConnection();
-		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
-			pstmt.setString(1, email);
-			pstmt.setString(2, password);
-			ResultSet rs = pstmt.executeQuery();
-			return rs.next();
-		} catch (SQLException e) {
-			throw new CouponSystemException("isCustomerExists failed", e);
-		} finally {
-			connectionPool.restoreConnection(con);
-		}
-	}
-
-	@Override
 	public int addCustomer(Customer customer) throws CouponSystemException {
 		String sql = "insert into CUSTOMERS values(0, ?, ?, ?, ?)";
 		Connection con = connectionPool.getConnection();
@@ -50,7 +34,7 @@ public class CustomersDBDao implements CustomersDao {
 			int id = rsId.getInt(1);
 			customer.setId(id);
 			return id;
-			} catch (SQLException e) {
+		} catch (SQLException e) {
 			throw new CouponSystemException("addCustomer failed", e);
 		} finally {
 			connectionPool.restoreConnection(con);
@@ -88,26 +72,7 @@ public class CustomersDBDao implements CustomersDao {
 			}
 		} catch (SQLException e) {
 			throw new CouponSystemException("deleteCustomer failed", e);
-		}finally {
-			connectionPool.restoreConnection(con);
-		}
-	}
-
-	@Override
-	public List<Customer> getAllCustomers() throws CouponSystemException {
-		String sql = "select * from CUSTOMERS";
-		Connection con = connectionPool.getConnection();
-		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
-			ResultSet rs = pstmt.executeQuery();
-			List<Customer> customers = new ArrayList<>();
-			while (rs.next()) {
-				customers.add(new Customer(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_Name"),
-						rs.getString("email"), rs.getString("password")));
-			}
-			return customers;
-		} catch (SQLException e) {
-			throw new CouponSystemException("getAllCustomers failed", e);
-		}finally {
+		} finally {
 			connectionPool.restoreConnection(con);
 		}
 	}
@@ -127,13 +92,48 @@ public class CustomersDBDao implements CustomersDao {
 			}
 		} catch (SQLException e) {
 			throw new CouponSystemException("getOneCustomer failed", e);
-		}finally {
+		} finally {
+			connectionPool.restoreConnection(con);
+		}
+	}
+
+	@Override
+	public List<Customer> getAllCustomers() throws CouponSystemException {
+		String sql = "select * from CUSTOMERS";
+		Connection con = connectionPool.getConnection();
+		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+			ResultSet rs = pstmt.executeQuery();
+			List<Customer> customers = new ArrayList<>();
+			while (rs.next()) {
+				customers.add(new Customer(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_Name"),
+						rs.getString("email"), rs.getString("password")));
+			}
+			return customers;
+		} catch (SQLException e) {
+			throw new CouponSystemException("getAllCustomers failed", e);
+		} finally {
 			connectionPool.restoreConnection(con);
 		}
 	}
 	
 	@Override
-	public boolean isCustomerExistsId(int id) throws CouponSystemException {
+	public boolean isCustomerExists(String email, String password) throws CouponSystemException {
+		String sql = "select id from CUSTOMERS where `email` =  ? AND `password` = ?";
+		Connection con = connectionPool.getConnection();
+		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+			pstmt.setString(1, email);
+			pstmt.setString(2, password);
+			ResultSet rs = pstmt.executeQuery();
+			return rs.next();
+		} catch (SQLException e) {
+			throw new CouponSystemException("isCustomerExists failed", e);
+		} finally {
+			connectionPool.restoreConnection(con);
+		}
+	}
+	
+	@Override
+	public boolean isCustomerExistsById(int id) throws CouponSystemException {
 		String sql = "select id from CUSTOMERS where `id` =  ?";
 		Connection con = connectionPool.getConnection();
 		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
@@ -141,15 +141,14 @@ public class CustomersDBDao implements CustomersDao {
 			ResultSet rs = pstmt.executeQuery();
 			return rs.next();
 		} catch (SQLException e) {
-			throw new CouponSystemException("isCustomerExistsId failed", e);
+			throw new CouponSystemException("isCustomerExistsById failed", e);
 		} finally {
 			connectionPool.restoreConnection(con);
 		}
 	}
 	
-	
 	@Override
-	public boolean isCustomerExistsEmail(String email) throws CouponSystemException {
+	public boolean isCustomerExistsByEmail(String email) throws CouponSystemException {
 		String sql = "select id from CUSTOMERS where `email` =  ?";
 		Connection con = connectionPool.getConnection();
 		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
@@ -157,7 +156,24 @@ public class CustomersDBDao implements CustomersDao {
 			ResultSet rs = pstmt.executeQuery();
 			return rs.next();
 		} catch (SQLException e) {
-			throw new CouponSystemException("isCustomerExistsEmail failed", e);
+			throw new CouponSystemException("isCustomerExistsByEmail failed", e);
+		} finally {
+			connectionPool.restoreConnection(con);
+		}
+	}
+
+	@Override
+	public void deleteCustomerOfCoupons(int customerId) throws CouponSystemException {
+		String sql = "delete from CUSTOMERS_VS_COUPONS where `customer_id` = ?";
+		Connection con = connectionPool.getConnection();
+		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+			pstmt.setInt(1, customerId);
+			if (pstmt.executeUpdate() == 0) {
+				throw new CouponSystemException(
+						"deleteCustomerOfCoupons failed: customerId-" + customerId + "  not found");
+			}
+		} catch (SQLException e) {
+			throw new CouponSystemException("deleteCustomerOfCoupons failed", e);
 		} finally {
 			connectionPool.restoreConnection(con);
 		}

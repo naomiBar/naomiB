@@ -27,10 +27,10 @@ public class Main {
 			
 			
 			CompaniesDBDao companiesDBDao = new CompaniesDBDao();
-			System.out.println("id: " + companiesDBDao.addCompany(new Company(0, "maomi", "naomi@gmail", "1234")));
-			System.out.println("id: " + companiesDBDao.addCompany(new Company(0, "talya", "talya@gmail", "1234")));
-			System.out.println("id: " + companiesDBDao.addCompany(new Company(0, "odel", "odel@gmail", "1234")));
-//			System.out.println("isCompanyExists: " + companiesDBDao.isCompanyExists("naomi@gmail", "1234"));
+//			System.out.println("id: " + companiesDBDao.addCompany(new Company(0, "maomi", "naomi@gmail", "1234")));
+//			System.out.println("id: " + companiesDBDao.addCompany(new Company(0, "talya", "talya@gmail", "1234")));
+//			System.out.println("id: " + companiesDBDao.addCompany(new Company(0, "odel", "odel@gmail", "1234")));
+			System.out.println("isCompanyExists: " + companiesDBDao.isCompanyExists("naomi@gmail", "0000"));
 //			
 //			companiesDBDao.addCompany(new Company(0, "odel", "odel@gmail", "0000"));
 //			companiesDBDao.updateCompany(new Company(2, "odel", "odel@gmail", "1111"));
@@ -51,10 +51,10 @@ public class Main {
 			
 			
 			CouponsDBDao couponsDBDao = new CouponsDBDao();
-			couponsDBDao.addCoupon(new Coupon(0, 1, Category.FOOD, "food for life", "good food for good life", LocalDate.of(2022, 1, 1), LocalDate.of(2023, 1, 1), 500, 658.5, "fooooood"));
-			couponsDBDao.addCoupon(new Coupon(0, 2, Category.FOOD, "food for life", "good food for good life", LocalDate.of(2022, 1, 1), LocalDate.of(2023, 1, 1), 500, 658.5, "fooooood"));
-			couponsDBDao.addCoupon(new Coupon(0, 2, Category.FOOD, "food for life", "good food for good life", LocalDate.of(2022, 1, 1), LocalDate.of(2023, 1, 1), 500, 658.5, "fooooood"));
-			couponsDBDao.addCoupon(new Coupon(0, 1, Category.FOOD, "food for life", "good food for good life", LocalDate.of(2022, 1, 1), LocalDate.of(2023, 1, 1), 500, 658.5, "fooooood"));
+//			couponsDBDao.addCoupon(new Coupon(0, 1, Category.FOOD, "food for life", "good food for good life", LocalDate.of(2022, 1, 1), LocalDate.of(2023, 1, 1), 500, 658.5, "fooooood"));
+//			couponsDBDao.addCoupon(new Coupon(0, 2, Category.FOOD, "food for life", "good food for good life", LocalDate.of(2022, 1, 1), LocalDate.of(2023, 1, 1), 500, 658.5, "fooooood"));
+//			couponsDBDao.addCoupon(new Coupon(0, 2, Category.FOOD, "food for life", "good food for good life", LocalDate.of(2022, 1, 1), LocalDate.of(2023, 1, 1), 500, 658.5, "fooooood"));
+//			couponsDBDao.addCoupon(new Coupon(0, 1, Category.FOOD, "food for life", "good food for good life", LocalDate.of(2022, 1, 1), LocalDate.of(2023, 1, 1), 500, 658.5, "fooooood"));
 //			System.out.println("getOneCoupon: " + couponsDBDao.getOneCoupon(1));
 //			couponsDBDao.updateCoupon(new Coupon(1, 1, Category.FOOD, "food for life", "good food for good life", LocalDate.of(2022, 1, 1), LocalDate.of(2023, 1, 1), 1000, 745.5, "fooooood"));
 //			System.out.println("getOneCoupon: " + couponsDBDao.getOneCoupon(1));

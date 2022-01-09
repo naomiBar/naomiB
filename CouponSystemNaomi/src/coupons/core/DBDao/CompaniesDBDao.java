@@ -11,35 +11,19 @@ import coupons.core.beans.Company;
 import coupons.core.dao.CompaniesDao;
 import coupons.core.exceptions.CouponSystemException;
 
-public class CompaniesDBDao implements CompaniesDao{
-	
+public class CompaniesDBDao implements CompaniesDao {
+
 	private ConnectionPool connectionPool;
-	
+
 	public CompaniesDBDao() throws CouponSystemException {
 		this.connectionPool = ConnectionPool.getInstance();
-	}
-
-	@Override
-	public boolean isCompanyExists(String email, String password) throws CouponSystemException{
-		String sql = "select id from COMPANIES where `email` =  ? AND `password` = ?";
-		Connection con = connectionPool.getConnection();
-		try (PreparedStatement pstmt = con.prepareStatement(sql)){
-			pstmt.setString(1, email);
-			pstmt.setString(2, password);
-			ResultSet rs = pstmt.executeQuery();
-			return rs.next();
-		} catch (SQLException e) {
-			throw new CouponSystemException("isCompanyExists failed", e);
-		}finally {
-			connectionPool.restoreConnection(con);
-		}
 	}
 
 	@Override
 	public int addCompany(Company company) throws CouponSystemException {
 		String sql = "insert into COMPANIES values(0, ?, ?, ?)";
 		Connection con = connectionPool.getConnection();
-		try (PreparedStatement pstmt = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)){
+		try (PreparedStatement pstmt = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 			pstmt.setString(1, company.getName());
 			pstmt.setString(2, company.getEmail());
 			pstmt.setString(3, company.getPassword());
@@ -51,7 +35,7 @@ public class CompaniesDBDao implements CompaniesDao{
 			return id;
 		} catch (SQLException e) {
 			throw new CouponSystemException("addCompany failed", e);
-		}finally {
+		} finally {
 			connectionPool.restoreConnection(con);
 		}
 	}
@@ -60,7 +44,7 @@ public class CompaniesDBDao implements CompaniesDao{
 	public void updateCompany(Company company) throws CouponSystemException {
 		String sql = "update COMPANIES set `name` = ?, `email` = ?, `password` = ? where `id` = ?";
 		Connection con = connectionPool.getConnection();
-		try (PreparedStatement pstmt = con.prepareStatement(sql)){
+		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
 			pstmt.setString(1, company.getName());
 			pstmt.setString(2, company.getEmail());
 			pstmt.setString(3, company.getPassword());
@@ -70,7 +54,7 @@ public class CompaniesDBDao implements CompaniesDao{
 			}
 		} catch (SQLException e) {
 			throw new CouponSystemException("updateCompany failed", e);
-		}finally {
+		} finally {
 			connectionPool.restoreConnection(con);
 		}
 	}
@@ -79,14 +63,34 @@ public class CompaniesDBDao implements CompaniesDao{
 	public void deleteCompany(int companyId) throws CouponSystemException {
 		String sql = "delete from COMPANIES where `id` = ?";
 		Connection con = connectionPool.getConnection();
-		try (PreparedStatement pstmt = con.prepareStatement(sql)){
+		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
 			pstmt.setInt(1, companyId);
 			if (pstmt.executeUpdate() == 0) {
 				throw new CouponSystemException("delete company " + companyId + " failed - not found");
 			}
 		} catch (SQLException e) {
 			throw new CouponSystemException("deleteCompany failed", e);
-		}finally {
+		} finally {
+			connectionPool.restoreConnection(con);
+		}
+	}
+
+	@Override
+	public Company getOneCompany(int companyId) throws CouponSystemException {
+		String sql = "select * from COMPANIES where id = ?";
+		Connection con = connectionPool.getConnection();
+		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+			pstmt.setInt(1, companyId);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				return new Company(rs.getInt("id"), rs.getString("name"), rs.getString("email"),
+						rs.getString("password"));
+			} else {
+				throw new CouponSystemException("read company " + companyId + " failed - not found");
+			}
+		} catch (SQLException e) {
+			throw new CouponSystemException("getOneCompany failed", e);
+		} finally {
 			connectionPool.restoreConnection(con);
 		}
 	}
@@ -95,80 +99,90 @@ public class CompaniesDBDao implements CompaniesDao{
 	public List<Company> getAllCompanies() throws CouponSystemException {
 		String sql = "select * from COMPANIES";
 		Connection con = connectionPool.getConnection();
-		try (PreparedStatement pstmt = con.prepareStatement(sql)){
+		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
 			ResultSet rs = pstmt.executeQuery();
 			List<Company> companies = new ArrayList<>();
 			while (rs.next()) {
-				companies.add(new Company(rs.getInt("id"), rs.getString("name"), rs.getString("email"), rs.getString("password")));
+				companies.add(new Company(rs.getInt("id"), rs.getString("name"), rs.getString("email"),
+						rs.getString("password")));
 			}
 			return companies;
 		} catch (SQLException e) {
 			throw new CouponSystemException("getAllCompanies failed", e);
-		}finally {
+		} finally {
+			connectionPool.restoreConnection(con);
+		}
+	}
+	
+	
+	@Override
+	public int isCompanyExistsRtnId(String email, String password) throws CouponSystemException {
+		String sql = "select id from COMPANIES where `email` =  ? AND `password` = ?";
+		Connection con = connectionPool.getConnection();
+		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+			pstmt.setString(1, email);
+			pstmt.setString(2, password);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				return rs.getInt("id");
+			}
+			return -1;
+		} catch (SQLException e) {
+			throw new CouponSystemException("isCompanyExists failed", e);
+		} finally {
 			connectionPool.restoreConnection(con);
 		}
 	}
 	
 	@Override
-	public Company getOneCompany(int companyId) throws CouponSystemException {
-		String sql = "select * from COMPANIES where id = ?";
-		Connection con = connectionPool.getConnection();
-		try (PreparedStatement pstmt = con.prepareStatement(sql)){
-			pstmt.setInt(1, companyId);
-			ResultSet rs = pstmt.executeQuery();
-			if (rs.next()) {
-				return new Company(rs.getInt("id"), rs.getString("name"), rs.getString("email"), rs.getString("password"));
-			} else {
-				throw new CouponSystemException("read company " + companyId + " failed - not found");
-			}
-		} catch (SQLException e) {
-			throw new CouponSystemException("getOneCompany failed", e);
-		}finally {
-			connectionPool.restoreConnection(con);
+	public boolean isCompanyExists(String email, String password) throws CouponSystemException {
+		if (isCompanyExistsRtnId(email, password) != -1) {
+			return true;
 		}
+		return false;
 	}
-
+	
 	@Override
-	public boolean isCompanyExistsId(int id) throws CouponSystemException {
+	public boolean isCompanyExistsById(int id) throws CouponSystemException {
 		String sql = "select id from COMPANIES where `id` =  ?";
 		Connection con = connectionPool.getConnection();
-		try (PreparedStatement pstmt = con.prepareStatement(sql)){
+		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
 			pstmt.setInt(1, id);
 			ResultSet rs = pstmt.executeQuery();
 			return rs.next();
 		} catch (SQLException e) {
-			throw new CouponSystemException("isCompanyExistsId failed", e);
-		}finally {
+			throw new CouponSystemException("isCompanyExistsById failed", e);
+		} finally {
 			connectionPool.restoreConnection(con);
 		}
 	}
 	
 	@Override
-	public boolean isCompanyExistsName(String name) throws CouponSystemException {
+	public boolean isCompanyExistsByName(String name) throws CouponSystemException {
 		String sql = "select id from COMPANIES where `name` =  ?";
 		Connection con = connectionPool.getConnection();
-		try (PreparedStatement pstmt = con.prepareStatement(sql)){
+		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
 			pstmt.setString(1, name);
 			ResultSet rs = pstmt.executeQuery();
 			return rs.next();
 		} catch (SQLException e) {
-			throw new CouponSystemException("isCompanyExistsName failed", e);
-		}finally {
+			throw new CouponSystemException("isCompanyExistsByName failed", e);
+		} finally {
 			connectionPool.restoreConnection(con);
 		}
 	}
-
+	
 	@Override
-	public boolean isCompanyExistsEmail(String email) throws CouponSystemException {
+	public boolean isCompanyExistsByEmail(String email) throws CouponSystemException {
 		String sql = "select id from COMPANIES where `email` =  ?";
 		Connection con = connectionPool.getConnection();
-		try (PreparedStatement pstmt = con.prepareStatement(sql)){
+		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
 			pstmt.setString(1, email);
 			ResultSet rs = pstmt.executeQuery();
 			return rs.next();
 		} catch (SQLException e) {
-			throw new CouponSystemException("isCompanyExistsEmail failed", e);
-		}finally {
+			throw new CouponSystemException("isCompanyExistsByEmail failed", e);
+		} finally {
 			connectionPool.restoreConnection(con);
 		}
 	}

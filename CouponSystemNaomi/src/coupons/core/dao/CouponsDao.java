@@ -10,10 +10,12 @@ public interface CouponsDao {
 	public int addCoupon(Coupon coupon) throws CouponSystemException;
 	public void updateCoupon(Coupon coupon) throws CouponSystemException;
 	public void deleteCoupon(int couponId) throws CouponSystemException;
-	public void deleteCouponsOfCompany(int companyId) throws CouponSystemException;
-	public List<Coupon> getAllCoupons() throws CouponSystemException;
 	public Coupon getOneCoupon(int couponId) throws CouponSystemException;
+	public List<Coupon> getAllCoupons() throws CouponSystemException;
 	public void addCouponPurchase(int customerId, int couponId) throws CouponSystemException;
 	public void deleteCouponPurchase(int customerId, int couponId) throws CouponSystemException;
-	public void deleteCouponPurchase(int couponId) throws CouponSystemException;
+	public boolean isCouponExistsByIdAndCompanyId(int couponId, int companyId) throws CouponSystemException;
+	public boolean isCouponExistsByTitleOfCompany(int companyId, String title) throws CouponSystemException;
+	public void deleteCouponById(int couponId) throws CouponSystemException;
+	public void deleteCouponsOfCompany(int companyId) throws CouponSystemException;
 }
