@@ -62,7 +62,7 @@ public class Main {
 			System.out.println("all: " + couponsDBDao.getAllCoupons());
 			
 //			couponsDBDao.addCouponPurchase(1, 2);
-			couponsDBDao.deleteCouponPurchase(1, 2);
+//			couponsDBDao.deleteCouponPurchase(1, 2);
 
 		} catch (CouponSystemException e) {
 			System.out.println("EROR: " + e.getMessage());
