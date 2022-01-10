@@ -8,7 +8,8 @@ import coupons.core.exceptions.CouponSystemException;
 
 public class AdminFacade extends ClientFacade {
 
-	public AdminFacade() {
+	public AdminFacade() throws CouponSystemException {
+		super();
 	}
 
 	@Override
@@ -16,17 +17,20 @@ public class AdminFacade extends ClientFacade {
 		return email.equals("admin@admin.com") && password.equals("admin");
 	}
 
-	public void addCompany(Company company) throws CouponSystemException {
-		if (!companiesDao.isCompanyExistsByName(company.getName())
+	public int addCompany(Company company) throws CouponSystemException {
+		if (company != null && company.getName() != null && company.getEmail() != null && company.getPassword() != null
+				&& !companiesDao.isCompanyExistsByName(company.getName())
 				&& !companiesDao.isCompanyExistsByEmail(company.getEmail())) {
-			companiesDao.addCompany(company);
+			return companiesDao.addCompany(company);
 		}
+		return -1;
 	}
 
 	public void updateCompany(Company company) throws CouponSystemException {
-		if (companiesDao.isCompanyExistsById(company.getId()) 
-				&& companiesDao.isCompanyExistsByName(company.getName())) {
-			companiesDao.updateCompany(company);
+		if (companiesDao.isCompanyExists(company.getId(), company.getName())) {
+			if(company.getEmail() != null && company.getPassword() != null) {
+				companiesDao.updateCompany(company);				
+			}
 		}
 	}
 
@@ -38,20 +42,26 @@ public class AdminFacade extends ClientFacade {
 	public Company getOneCompany(int companyId) throws CouponSystemException {
 		return companiesDao.getOneCompany(companyId);
 	}
-	
+
 	public List<Company> getAllCompanies() throws CouponSystemException {
 		return companiesDao.getAllCompanies();
 	}
 
-	public void addCustomer(Customer customer) throws CouponSystemException {
-		if(!customersDao.isCustomerExistsByEmail(customer.getEmail())) {
-			customersDao.addCustomer(customer);
+	public int addCustomer(Customer customer) throws CouponSystemException {
+		if (customer != null && customer.getFirstName() != null && customer.getLastName() != null
+				&& customer.getEmail() != null && customer.getPassword() != null
+				&& !customersDao.isCustomerExistsByEmail(customer.getEmail())) {
+			return customersDao.addCustomer(customer);
 		}
+		return -1;
 	}
 
 	public void updateCustomer(Customer customer) throws CouponSystemException {
-		if(customersDao.isCustomerExistsById(customer.getId())) {
-			customersDao.updateCustomer(customer);
+		if (customersDao.isCustomerExistsById(customer.getId())) {
+			if(customer.getFirstName() != null && customer.getLastName() != null
+				&& customer.getEmail() != null && customer.getPassword() != null) {
+				customersDao.updateCustomer(customer);				
+			}
 		}
 	}
 
@@ -59,7 +69,6 @@ public class AdminFacade extends ClientFacade {
 		customersDao.deleteCustomer(customerId);
 		customersDao.deleteCustomerOfCoupons(customerId);
 	}
-
 
 	public Customer getOneCustomer(int customerId) throws CouponSystemException {
 		return customersDao.getOneCustomer(customerId);

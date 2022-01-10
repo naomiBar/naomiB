@@ -128,7 +128,7 @@ public class CompaniesDBDao implements CompaniesDao {
 			}
 			return -1;
 		} catch (SQLException e) {
-			throw new CouponSystemException("isCompanyExists failed", e);
+			throw new CouponSystemException("isCompanyExistsRtnId failed", e);
 		} finally {
 			connectionPool.restoreConnection(con);
 		}
@@ -143,11 +143,12 @@ public class CompaniesDBDao implements CompaniesDao {
 	}
 	
 	@Override
-	public boolean isCompanyExistsById(int id) throws CouponSystemException {
-		String sql = "select id from COMPANIES where `id` =  ?";
+	public boolean isCompanyExists(int id, String name) throws CouponSystemException {
+		String sql = "select id from COMPANIES where `id` =  ? AND `name` = ?";
 		Connection con = connectionPool.getConnection();
 		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
 			pstmt.setInt(1, id);
+			pstmt.setString(2, name);
 			ResultSet rs = pstmt.executeQuery();
 			return rs.next();
 		} catch (SQLException e) {

@@ -25,7 +25,7 @@ public class CouponsDBDao implements CouponsDao {
 	public int addCoupon(Coupon coupon) throws CouponSystemException {
 		String sql = "insert into COUPONS values(0, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		Connection con = connectionPool.getConnection();
-		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+		try (PreparedStatement pstmt = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 			pstmt.setInt(1, coupon.getCompanyId());
 			pstmt.setString(2, coupon.getCategory().toString());
 			pstmt.setString(3, coupon.getTitle());
@@ -218,7 +218,7 @@ public class CouponsDBDao implements CouponsDao {
 	public void deleteCouponsOfCompany(int companyId) throws CouponSystemException {
 		String sql = "delete from COUPONS where `company_id` = ?";
 		Connection con = connectionPool.getConnection();
-		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+		try (PreparedStatement pstmt = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 			pstmt.setInt(1, companyId);
 			pstmt.executeUpdate();
 			ResultSet rsId = pstmt.getGeneratedKeys();
