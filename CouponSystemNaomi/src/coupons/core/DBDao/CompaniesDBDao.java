@@ -159,30 +159,16 @@ public class CompaniesDBDao implements CompaniesDao {
 	}
 	
 	@Override
-	public boolean isCompanyExistsByName(String name) throws CouponSystemException {
-		String sql = "select id from COMPANIES where `name` =  ?";
+	public boolean isCompanyExistsByNameOrEmail(String name, String email) throws CouponSystemException {
+		String sql = "select id from COMPANIES where `name` =  ? Or `email` = ?";
 		Connection con = connectionPool.getConnection();
 		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
 			pstmt.setString(1, name);
+			pstmt.setString(2, email);
 			ResultSet rs = pstmt.executeQuery();
 			return rs.next();
 		} catch (SQLException e) {
-			throw new CouponSystemException("isCompanyExistsByName failed", e);
-		} finally {
-			connectionPool.restoreConnection(con);
-		}
-	}
-	
-	@Override
-	public boolean isCompanyExistsByEmail(String email) throws CouponSystemException {
-		String sql = "select id from COMPANIES where `email` =  ?";
-		Connection con = connectionPool.getConnection();
-		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
-			pstmt.setString(1, email);
-			ResultSet rs = pstmt.executeQuery();
-			return rs.next();
-		} catch (SQLException e) {
-			throw new CouponSystemException("isCompanyExistsByEmail failed", e);
+			throw new CouponSystemException("isCompanyExistsByNameOrEmail failed", e);
 		} finally {
 			connectionPool.restoreConnection(con);
 		}

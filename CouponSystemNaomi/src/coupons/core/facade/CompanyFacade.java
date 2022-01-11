@@ -1,6 +1,5 @@
 package coupons.core.facade;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,9 +14,9 @@ public class CompanyFacade extends ClientFacade {
 
 	public CompanyFacade(Company company) throws CouponSystemException {
 		super();
-		if (!login(company.getEmail(), company.getPassword())) {
-			throw new CouponSystemException("this company not exists");
-		}
+//		if (!login(company.getEmail(), company.getPassword())) {
+//			throw new CouponSystemException("this company not exists");
+//		}
 	}
 
 	@Override
@@ -27,27 +26,32 @@ public class CompanyFacade extends ClientFacade {
 	}
 
 	public void addCoupon(Coupon coupon) throws CouponSystemException {
-		if (coupon != null && coupon.getCompanyId() != 0 && coupon.getCategory() != null && coupon.getTitle() != null
-				&& coupon.getDescription() != null && coupon.getStartDate() != null && coupon.getEndDate() != null
-				&& coupon.getAmount() != 0 && coupon.getPrice() != 0 && coupon.getImage() != null
-				&& !couponsDao.isCouponExistsByTitleOfCompany(coupon.getCompanyId(), coupon.getTitle())) {
-			couponsDao.addCoupon(coupon);
+		if (coupon == null || coupon.getCompanyId() == 0 || coupon.getCategory() == null || coupon.getTitle() == null
+				|| coupon.getDescription() == null || coupon.getStartDate() == null || coupon.getEndDate() == null
+				|| coupon.getAmount() == 0 || coupon.getPrice() == 0 || coupon.getImage() == null) {
+			throw new CouponSystemException("addCoupon failed - impossible add coupon with null features");
 		}
+		if(couponsDao.isCouponExistsByTitleOfCompany(coupon.getCompanyId(), coupon.getTitle())) {
+			throw new CouponSystemException("addCoupon failed - title already exist for this coupon id");
+		}	
+		couponsDao.addCoupon(coupon);
 	}
 
 	public void updateCoupon(Coupon coupon) throws CouponSystemException {
-		if (couponsDao.isCouponExistsByIdAndCompanyId(coupon.getId(), coupon.getCompanyId())) {
-			if(coupon.getCategory() != null && coupon.getTitle() != null
-				&& coupon.getDescription() != null && coupon.getStartDate() != null && coupon.getEndDate() != null
-				&& coupon.getAmount() != 0 && coupon.getPrice() != 0 && coupon.getImage() != null) {
-				couponsDao.updateCoupon(coupon);				
-			}
+		if (coupon == null || coupon.getCompanyId() == 0 || coupon.getCategory() == null || coupon.getTitle() == null
+				|| coupon.getDescription() == null || coupon.getStartDate() == null || coupon.getEndDate() == null
+				|| coupon.getAmount() == 0 || coupon.getPrice() == 0 || coupon.getImage() == null) {
+			throw new CouponSystemException("updateCoupon failed - impossible update coupon with null features");
 		}
+		if (!couponsDao.isCouponExistsByIdAndCompanyId(coupon.getId(), coupon.getCompanyId())) {
+			throw new CouponSystemException("updateCoupon failed - impossible update company if id and companyId of coupon not exist");		
+		}
+		couponsDao.updateCoupon(coupon);				
 	}
 
 	public void deleteCoupon(int couponId) throws CouponSystemException {
+		couponsDao.deleteCouponPurchase(couponId);
 		couponsDao.deleteCoupon(couponId);
-		couponsDao.deleteCouponById(couponId);
 	}
 
 	public List<Coupon> getCompanyCoupons() throws CouponSystemException {

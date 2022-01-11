@@ -1,12 +1,9 @@
 package coupons.core;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
-import coupons.core.DBDao.CompaniesDBDao;
 import coupons.core.DBDao.ConnectionPool;
 import coupons.core.DBDao.CouponsDBDao;
-import coupons.core.DBDao.CustomersDBDao;
 import coupons.core.beans.Category;
 import coupons.core.beans.Company;
 import coupons.core.beans.Coupon;
@@ -23,33 +20,35 @@ public class Main {
 		try {
 			
 			AdminFacade adminFacade = new AdminFacade();
-			System.out.println("id: " + adminFacade.addCompany(null));
-			System.out.println("id: " + adminFacade.addCompany(new Company()));
-			System.out.println("id: " + adminFacade.addCompany(new Company(0, "Cola", "Cola@gmail", "1234")));
-			System.out.println("id: " + adminFacade.addCompany(new Company(0, "nutella", "nutella@gmail", "1234")));
-			System.out.println("id: " + adminFacade.addCompany(new Company(0, "nutella", "nutella@gmail", "1234")));
+			adminFacade.addCompany(new Company(0, "nutella", "nutella@gmail", "1234"));
+//			System.out.println("id: " + adminFacade.addCompany(null));
+//			System.out.println("id: " + adminFacade.addCompany(new Company()));
+//			System.out.println("id: " + adminFacade.addCompany(new Company(0, "Cola", "Cola@gmail", "1234")));
+//			System.out.println("id: " + adminFacade.addCompany(new Company(0, "nutella", "nutella@gmail", "1234")));
+//			System.out.println("id: " + adminFacade.addCompany(new Company(0, "nutella", "nutella@gmail", "1234")));
 			adminFacade.updateCompany(new Company(1, "Cola", "", "1234"));
 //			adminFacade.deleteCompany(5);
 //			System.out.println(adminFacade.getOneCompany(4));
 			System.out.println(adminFacade.getAllCompanies());
 			
 			
-			System.out.println("id: " + adminFacade.addCustomer(null));
-			System.out.println("id: " + adminFacade.addCustomer(new Customer()));
-			System.out.println("id: " + adminFacade.addCustomer(new Customer(0, "naomi", "bar", "naomi@gmail.com", "0000")));
-			System.out.println("id: " + adminFacade.addCustomer(new Customer(0, "naomi", "bar", "naomi@gmail.com", "0000")));
-			System.out.println("id: " + adminFacade.addCustomer(new Customer(0, "odel", "levi", "naomi@gmail.com", "0000")));
-			System.out.println("id: " + adminFacade.addCustomer(new Customer(0, "odel", "levi", "odel@gmail.com", "0000")));
+		    adminFacade.addCustomer(null);
+			adminFacade.addCustomer(new Customer());
+			adminFacade.addCustomer(new Customer(0, "naomi", "bar", "naomi@gmail.com", "0000"));
+			adminFacade.addCustomer(new Customer(0, "naomi", "bar", "naomi@gmail.com", "0000"));
+			adminFacade.addCustomer(new Customer(0, "odel", "levi", "naomi@gmail.com", "0000"));
+			adminFacade.addCustomer(new Customer(0, "odel", "levi", "odel@gmail.com", "0000"));
 			adminFacade.updateCustomer(new Customer(2, "odel", "levi", "odel@gmail.com", "1111"));
 			System.out.println(adminFacade.getOneCustomer(1));
 			System.out.println(adminFacade.getAllCustomers());
 			
-//			CompanyFacade companyFacade = new CompanyFacade(adminFacade.getOneCompany(1));
-			CompanyFacade companyFacade = new CompanyFacade(adminFacade.getOneCompany(5));
-//			companyFacade.addCoupon(null);
 			
+			CompanyFacade companyFacade = new CompanyFacade(adminFacade.getOneCompany(1));
+			companyFacade.addCoupon(new Coupon(0, 1, Category.FOOD, "food for life", "good food for good life", LocalDate.of(2022, 1, 1), LocalDate.of(2023, 1, 1), 500, 658.5, "fooooood"));
+			companyFacade.addCoupon(new Coupon(0, 1, Category.FOOD, "car", "good food for good life", LocalDate.of(2022, 1, 1), LocalDate.of(2023, 1, 1), 500, 658.5, "fooooood"));
 			
 //			CouponsDBDao couponsDBDao = new CouponsDBDao();
+//			couponsDBDao.deleteCouponsOfCompany(1);
 //			couponsDBDao.addCoupon(new Coupon(0, 1, Category.FOOD, "food for life", "good food for good life", LocalDate.of(2022, 1, 1), LocalDate.of(2023, 1, 1), 500, 658.5, "fooooood"));
 //			couponsDBDao.addCoupon(new Coupon(0, 2, Category.FOOD, "food for life", "good food for good life", LocalDate.of(2022, 1, 1), LocalDate.of(2023, 1, 1), 500, 658.5, "fooooood"));
 //			couponsDBDao.addCoupon(new Coupon(0, 2, Category.FOOD, "food for life", "good food for good life", LocalDate.of(2022, 1, 1), LocalDate.of(2023, 1, 1), 500, 658.5, "fooooood"));

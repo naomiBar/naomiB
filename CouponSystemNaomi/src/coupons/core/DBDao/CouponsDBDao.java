@@ -197,39 +197,51 @@ public class CouponsDBDao implements CouponsDao {
 			connectionPool.restoreConnection(con);
 		}
 	}
-
-	@Override
-	public void deleteCouponById(int couponId) throws CouponSystemException {
-		String sql = "delete from CUSTOMERS_VS_COUPONS where `coupon_id` = ?";
-		Connection con = connectionPool.getConnection();
-		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
-			pstmt.setInt(1, couponId);
-			if (pstmt.executeUpdate() == 0) {
-				throw new CouponSystemException("deleteCouponById failed: couponId-" + couponId + "  not found");
-			}
-		} catch (SQLException e) {
-			throw new CouponSystemException("deleteCouponById failed", e);
-		} finally {
-			connectionPool.restoreConnection(con);
-		}
-	}
-
+	
 	@Override
 	public void deleteCouponsOfCompany(int companyId) throws CouponSystemException {
 		String sql = "delete from COUPONS where `company_id` = ?";
 		Connection con = connectionPool.getConnection();
 		try (PreparedStatement pstmt = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 			pstmt.setInt(1, companyId);
-			pstmt.executeUpdate();
-			ResultSet rsId = pstmt.getGeneratedKeys();
-			while(rsId.next()) {
-				deleteCouponById(rsId.getInt(1));
-			}
 			if (pstmt.executeUpdate() == 0) {
 				throw new CouponSystemException("delete coupons of company " + companyId + " failed - not found");
 			}
 		} catch (SQLException e) {
 			throw new CouponSystemException("deleteCouponsOfCompany failed", e);
+		} finally {
+			connectionPool.restoreConnection(con);
+		}
+	}
+	
+	@Override
+	public void deleteCompanyCouponPurchase(int companyId) throws CouponSystemException {
+		String sql = "delete from CUSTOMERS_VS_COUPONS where `coupon_id` in(select id from COUPONS where `company_id` = ?";
+		Connection con = connectionPool.getConnection();
+		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+			pstmt.setInt(1, companyId);
+			if (pstmt.executeUpdate() == 0) {
+				throw new CouponSystemException("delete coupons purchase of company " + companyId + " failed - not found");
+			}	
+		} catch (SQLException e) {
+			throw new CouponSystemException("deleteCompanyCouponPurchase failed", e);
+		} finally {
+			connectionPool.restoreConnection(con);
+		}
+	}
+	
+	
+	@Override
+	public void deleteCouponPurchase(int couponId) throws CouponSystemException {
+		String sql = "delete from CUSTOMERS_VS_COUPONS where `coupon_id` = ?";
+		Connection con = connectionPool.getConnection();
+		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+			pstmt.setInt(1, couponId);
+			if (pstmt.executeUpdate() == 0) {
+				throw new CouponSystemException("delete coupons purchase " + couponId + " failed - not found");
+			}	
+		} catch (SQLException e) {
+			throw new CouponSystemException("deleteCouponPurchase failed", e);
 		} finally {
 			connectionPool.restoreConnection(con);
 		}

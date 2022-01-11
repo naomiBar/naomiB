@@ -190,17 +190,17 @@ public class CustomersDBDao implements CustomersDao {
 	}
 	
 	@Override
-	public void deleteCustomerOfCoupons(int customerId) throws CouponSystemException {
+	public void deleteCustomerCouponPurchase(int customerId) throws CouponSystemException {
 		String sql = "delete from CUSTOMERS_VS_COUPONS where `customer_id` = ?";
 		Connection con = connectionPool.getConnection();
 		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
 			pstmt.setInt(1, customerId);
 			if (pstmt.executeUpdate() == 0) {
 				throw new CouponSystemException(
-						"deleteCustomerOfCoupons failed: customerId-" + customerId + "  not found");
+						"deleteCustomerCouponPurchase failed: customerId-" + customerId + "  not found");
 			}
 		} catch (SQLException e) {
-			throw new CouponSystemException("deleteCustomerOfCoupons failed", e);
+			throw new CouponSystemException("deleteCustomerCouponPurchase failed", e);
 		} finally {
 			connectionPool.restoreConnection(con);
 		}

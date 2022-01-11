@@ -12,31 +12,41 @@ public class AdminFacade extends ClientFacade {
 		super();
 	}
 
+	private final String email = "admin@admin.com";
+	private final String password = "admin";
+
 	@Override
 	public boolean login(String email, String password) {
-		return email.equals("admin@admin.com") && password.equals("admin");
+		return email.equals(this.email) && password.equals(this.password);
 	}
 
-	public int addCompany(Company company) throws CouponSystemException {
-		if (company != null && company.getName() != null && company.getEmail() != null && company.getPassword() != null
-				&& !companiesDao.isCompanyExistsByName(company.getName())
-				&& !companiesDao.isCompanyExistsByEmail(company.getEmail())) {
-			return companiesDao.addCompany(company);
+	public void addCompany(Company company) throws CouponSystemException {
+		if (company == null || company.getName() == null || company.getEmail() == null
+				|| company.getPassword() == null) {
+			throw new CouponSystemException("addCompany failed - impossible add company with null features");
 		}
-		return -1;
+		if (companiesDao.isCompanyExistsByNameOrEmail(company.getName(), company.getEmail())) {
+			throw new CouponSystemException("addCompany failed - name or email already exist");
+		}
+		companiesDao.addCompany(company);
 	}
 
 	public void updateCompany(Company company) throws CouponSystemException {
-		if (companiesDao.isCompanyExists(company.getId(), company.getName())) {
-			if(company.getEmail() != null && company.getPassword() != null) {
-				companiesDao.updateCompany(company);				
-			}
+		if (company == null || company.getName() == null || company.getEmail() == null
+				|| company.getPassword() == null) {
+			throw new CouponSystemException("updateCompany failed - impossible update company with null features");
 		}
+		if (!companiesDao.isCompanyExists(company.getId(), company.getName())) {
+			throw new CouponSystemException(
+					"updateCompany failed - impossible update company if id and name of company not exist");
+		}
+		companiesDao.updateCompany(company);
 	}
 
 	public void deleteCompany(int companyId) throws CouponSystemException {
-		companiesDao.deleteCompany(companyId);
+		couponsDao.deleteCompanyCouponPurchase(companyId);
 		couponsDao.deleteCouponsOfCompany(companyId);
+		companiesDao.deleteCompany(companyId);
 	}
 
 	public Company getOneCompany(int companyId) throws CouponSystemException {
@@ -47,27 +57,32 @@ public class AdminFacade extends ClientFacade {
 		return companiesDao.getAllCompanies();
 	}
 
-	public int addCustomer(Customer customer) throws CouponSystemException {
-		if (customer != null && customer.getFirstName() != null && customer.getLastName() != null
-				&& customer.getEmail() != null && customer.getPassword() != null
-				&& !customersDao.isCustomerExistsByEmail(customer.getEmail())) {
-			return customersDao.addCustomer(customer);
+	public void addCustomer(Customer customer) throws CouponSystemException {
+		if (customer == null || customer.getFirstName() == null || customer.getLastName() == null
+				|| customer.getEmail() == null || customer.getPassword() == null) {
+			throw new CouponSystemException("addCustomer failed - impossible add customer with null features");
 		}
-		return -1;
+		if (customersDao.isCustomerExistsByEmail(customer.getEmail())) {
+			throw new CouponSystemException("addCustomer failed - email already exist");
+		}
+		customersDao.addCustomer(customer);
 	}
 
 	public void updateCustomer(Customer customer) throws CouponSystemException {
-		if (customersDao.isCustomerExistsById(customer.getId())) {
-			if(customer.getFirstName() != null && customer.getLastName() != null
-				&& customer.getEmail() != null && customer.getPassword() != null) {
-				customersDao.updateCustomer(customer);				
-			}
+		if (customer == null || customer.getFirstName() == null || customer.getLastName() == null
+				|| customer.getEmail() == null || customer.getPassword() == null) {
+			throw new CouponSystemException("updateCustomer failed - impossible update customer with null features");
 		}
+		if (!customersDao.isCustomerExistsById(customer.getId())) {
+			throw new CouponSystemException(
+					"updateCompany failed - impossible update company if id of customer not exist");
+		}
+		customersDao.updateCustomer(customer);
 	}
 
 	public void deleteCustomer(int customerId) throws CouponSystemException {
+		customersDao.deleteCustomerCouponPurchase(customerId);
 		customersDao.deleteCustomer(customerId);
-		customersDao.deleteCustomerOfCoupons(customerId);
 	}
 
 	public Customer getOneCustomer(int customerId) throws CouponSystemException {

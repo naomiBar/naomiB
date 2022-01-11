@@ -15,6 +15,5 @@ public interface CompaniesDao {
 	public int isCompanyExistsRtnId(String email, String password) throws CouponSystemException;
 	public boolean isCompanyExists(String email, String password) throws CouponSystemException;
 	public boolean isCompanyExists(int id, String name) throws CouponSystemException;
-	public boolean isCompanyExistsByName(String name) throws CouponSystemException;
-	public boolean isCompanyExistsByEmail(String email) throws CouponSystemException;
+	public boolean isCompanyExistsByNameOrEmail(String name, String email) throws CouponSystemException;
 }
