@@ -190,6 +190,21 @@ public class CustomersDBDao implements CustomersDao {
 	}
 	
 	@Override
+	public boolean isCouponPurchaseExistsByCustomerId(int customerId) throws CouponSystemException {
+		String sql = "select * from CUSTOMERS_VS_COUPONS where `customer_id` =  ?";
+		Connection con = connectionPool.getConnection();
+		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+			pstmt.setInt(1, customerId);
+			ResultSet rs = pstmt.executeQuery();
+			return rs.next();
+		} catch (SQLException e) {
+			throw new CouponSystemException("isCouponExistsByCustomerId failed", e);
+		} finally {
+			connectionPool.restoreConnection(con);
+		}
+	}
+	
+	@Override
 	public void deleteCustomerCouponPurchase(int customerId) throws CouponSystemException {
 		String sql = "delete from CUSTOMERS_VS_COUPONS where `customer_id` = ?";
 		Connection con = connectionPool.getConnection();

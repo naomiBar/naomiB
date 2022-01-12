@@ -20,7 +20,7 @@ public class AdminFacade extends ClientFacade {
 		return email.equals(this.email) && password.equals(this.password);
 	}
 
-	public void addCompany(Company company) throws CouponSystemException {
+	public int addCompany(Company company) throws CouponSystemException {
 		if (company == null || company.getName() == null || company.getEmail() == null
 				|| company.getPassword() == null) {
 			throw new CouponSystemException("addCompany failed - impossible add company with null features");
@@ -28,7 +28,7 @@ public class AdminFacade extends ClientFacade {
 		if (companiesDao.isCompanyExistsByNameOrEmail(company.getName(), company.getEmail())) {
 			throw new CouponSystemException("addCompany failed - name or email already exist");
 		}
-		companiesDao.addCompany(company);
+		return companiesDao.addCompany(company);
 	}
 
 	public void updateCompany(Company company) throws CouponSystemException {
@@ -36,7 +36,8 @@ public class AdminFacade extends ClientFacade {
 				|| company.getPassword() == null) {
 			throw new CouponSystemException("updateCompany failed - impossible update company with null features");
 		}
-		if (!companiesDao.isCompanyExists(company.getId(), company.getName())) {
+		boolean x = companiesDao.isCompanyExists(company.getId(), company.getName());
+		if (!x) {
 			throw new CouponSystemException(
 					"updateCompany failed - impossible update company if id and name of company not exist");
 		}
@@ -44,8 +45,14 @@ public class AdminFacade extends ClientFacade {
 	}
 
 	public void deleteCompany(int companyId) throws CouponSystemException {
-		couponsDao.deleteCompanyCouponPurchase(companyId);
-		couponsDao.deleteCouponsOfCompany(companyId);
+		if(couponsDao.isCouponPurchaseExistsByCompanyId(companyId)) {
+			System.out.println("isCouponPurchaseExistsByCompanyId");
+			couponsDao.deleteCompanyCouponPurchase(companyId);			
+		}
+		if(couponsDao.isCouponExistsByCompanyId(companyId)) {
+			System.out.println("isCouponExistsByCompanyId");
+			couponsDao.deleteCouponsOfCompany(companyId);			
+		}
 		companiesDao.deleteCompany(companyId);
 	}
 
@@ -57,7 +64,7 @@ public class AdminFacade extends ClientFacade {
 		return companiesDao.getAllCompanies();
 	}
 
-	public void addCustomer(Customer customer) throws CouponSystemException {
+	public int addCustomer(Customer customer) throws CouponSystemException {
 		if (customer == null || customer.getFirstName() == null || customer.getLastName() == null
 				|| customer.getEmail() == null || customer.getPassword() == null) {
 			throw new CouponSystemException("addCustomer failed - impossible add customer with null features");
@@ -65,7 +72,7 @@ public class AdminFacade extends ClientFacade {
 		if (customersDao.isCustomerExistsByEmail(customer.getEmail())) {
 			throw new CouponSystemException("addCustomer failed - email already exist");
 		}
-		customersDao.addCustomer(customer);
+		return customersDao.addCustomer(customer);
 	}
 
 	public void updateCustomer(Customer customer) throws CouponSystemException {
@@ -81,7 +88,10 @@ public class AdminFacade extends ClientFacade {
 	}
 
 	public void deleteCustomer(int customerId) throws CouponSystemException {
-		customersDao.deleteCustomerCouponPurchase(customerId);
+		if(customersDao.isCouponPurchaseExistsByCustomerId(customerId)) {
+			System.out.println("isCouponExistsByCustomerId");
+			customersDao.deleteCustomerCouponPurchase(customerId);			
+		}
 		customersDao.deleteCustomer(customerId);
 	}
 

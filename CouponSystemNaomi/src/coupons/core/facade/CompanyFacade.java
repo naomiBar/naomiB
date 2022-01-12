@@ -12,11 +12,8 @@ public class CompanyFacade extends ClientFacade {
 
 	private int companyId;
 
-	public CompanyFacade(Company company) throws CouponSystemException {
+	public CompanyFacade() throws CouponSystemException {
 		super();
-//		if (!login(company.getEmail(), company.getPassword())) {
-//			throw new CouponSystemException("this company not exists");
-//		}
 	}
 
 	@Override
@@ -25,7 +22,7 @@ public class CompanyFacade extends ClientFacade {
 		return companiesDao.isCompanyExists(email, password);
 	}
 
-	public void addCoupon(Coupon coupon) throws CouponSystemException {
+	public int addCoupon(Coupon coupon) throws CouponSystemException {
 		if (coupon == null || coupon.getCompanyId() == 0 || coupon.getCategory() == null || coupon.getTitle() == null
 				|| coupon.getDescription() == null || coupon.getStartDate() == null || coupon.getEndDate() == null
 				|| coupon.getAmount() == 0 || coupon.getPrice() == 0 || coupon.getImage() == null) {
@@ -34,7 +31,7 @@ public class CompanyFacade extends ClientFacade {
 		if(couponsDao.isCouponExistsByTitleOfCompany(coupon.getCompanyId(), coupon.getTitle())) {
 			throw new CouponSystemException("addCoupon failed - title already exist for this coupon id");
 		}	
-		couponsDao.addCoupon(coupon);
+		return couponsDao.addCoupon(coupon);
 	}
 
 	public void updateCoupon(Coupon coupon) throws CouponSystemException {
@@ -50,7 +47,10 @@ public class CompanyFacade extends ClientFacade {
 	}
 
 	public void deleteCoupon(int couponId) throws CouponSystemException {
-		couponsDao.deleteCouponPurchase(couponId);
+		if(couponsDao.isCouponPurchaseExistsByCouponId(couponId)) {
+			System.out.println("isCouponPurchaseExistsByCouponId");
+			couponsDao.deleteCouponPurchase(couponId);
+		}
 		couponsDao.deleteCoupon(couponId);
 	}
 

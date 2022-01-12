@@ -17,5 +17,6 @@ public interface CustomersDao {
 	public boolean isCustomerExistsById(int id) throws CouponSystemException;
 	public boolean isCustomerExistsByEmail(String email) throws CouponSystemException;
 	public boolean isPurchaseCouponExists(int customerId, int couponId) throws CouponSystemException;
+	public boolean isCouponPurchaseExistsByCustomerId(int customerId) throws CouponSystemException;
 	public void deleteCustomerCouponPurchase(int customerId) throws CouponSystemException;
 }
