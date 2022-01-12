@@ -9,11 +9,13 @@ public interface CouponsDao {
 	
 	public int addCoupon(Coupon coupon) throws CouponSystemException;
 	public void updateCoupon(Coupon coupon) throws CouponSystemException;
+	public void updateAmountCoupon(int amount, int couponId) throws CouponSystemException;
 	public void deleteCoupon(int couponId) throws CouponSystemException;
 	public Coupon getOneCoupon(int couponId) throws CouponSystemException;
 	public List<Coupon> getAllCoupons() throws CouponSystemException;
 	public void addCouponPurchase(int customerId, int couponId) throws CouponSystemException;
 	public void deleteCouponPurchase(int customerId, int couponId) throws CouponSystemException;
+	public boolean isCouponExistsByCouponId(int couponId) throws CouponSystemException;
 	public boolean isCouponExistsByCompanyId(int companyId) throws CouponSystemException;
 	public boolean isCouponExistsByIdAndCompanyId(int couponId, int companyId) throws CouponSystemException;
 	public boolean isCouponExistsByTitleOfCompany(int companyId, String title) throws CouponSystemException;

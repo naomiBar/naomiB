@@ -31,6 +31,9 @@ public class CompanyFacade extends ClientFacade {
 		if(couponsDao.isCouponExistsByTitleOfCompany(coupon.getCompanyId(), coupon.getTitle())) {
 			throw new CouponSystemException("addCoupon failed - title already exist for this coupon id");
 		}	
+		if(this.companyId != coupon.getCompanyId()) {
+			throw new CouponSystemException("addCoupon failed - You can not add a coupon without your companyId");			
+		}
 		return couponsDao.addCoupon(coupon);
 	}
 
@@ -41,7 +44,7 @@ public class CompanyFacade extends ClientFacade {
 			throw new CouponSystemException("updateCoupon failed - impossible update coupon with null features");
 		}
 		if (!couponsDao.isCouponExistsByIdAndCompanyId(coupon.getId(), coupon.getCompanyId())) {
-			throw new CouponSystemException("updateCoupon failed - impossible update company if id and companyId of coupon not exist");		
+			throw new CouponSystemException("updateCoupon failed - impossible update company if id or companyId of coupon not exist");		
 		}
 		couponsDao.updateCoupon(coupon);				
 	}

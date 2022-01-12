@@ -26,12 +26,22 @@ public class CustomerFacade extends ClientFacade {
 	}
 
 	public void purchaseCoupon(Coupon coupon) throws CouponSystemException {
-		boolean isPurchaseCouponExists = customersDao.isPurchaseCouponExists(customerId, coupon.getId());
-
-		if (!isPurchaseCouponExists && coupon.getAmount() > 0 && coupon.getEndDate().isAfter(LocalDate.now())) {
-			couponsDao.addCouponPurchase(customerId, coupon.getId());
-			coupon.setAmount(coupon.getAmount() - 1);
+		if(customersDao.isPurchaseCouponExists(customerId, coupon.getId())) {
+			throw new CouponSystemException("purchaseCoupon failed - isPurchaseCouponExists");
 		}
+		if (coupon.getAmount() == 0) {
+			throw new CouponSystemException("purchaseCoupon failed - There are no coupons left to purchase");			
+		}
+		if(coupon.getEndDate().isBefore(LocalDate.now())) {
+			throw new CouponSystemException("purchaseCoupon failed - The coupon has expired");			
+		}
+		if(!couponsDao.isCouponExistsByCouponId(coupon.getId())) {
+			throw new CouponSystemException("purchaseCoupon failed - coupon " + coupon.getId() + " not exists");						
+		}
+		couponsDao.addCouponPurchase(customerId, coupon.getId());
+		coupon.setAmount(coupon.getAmount() - 1);
+		couponsDao.updateAmountCoupon(coupon.getAmount(), coupon.getId());
+		System.out.println("purchaseCoupon - id: " + coupon.getId());				
 	}
 
 	public List<Coupon> getCustomerCoupons() throws CouponSystemException {
