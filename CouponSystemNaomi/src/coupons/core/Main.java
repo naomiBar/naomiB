@@ -22,15 +22,17 @@ import coupons.core.facade.LoginManager;
 public class Main {
 
 	public static void main(String[] args) {
+		testall();
+	}
 
-
+	private static void testall() {
 		try {
 			CouponExpirationDailyJob job = new CouponExpirationDailyJob();
 			Thread thread = new Thread(job, "thread");
 			thread.start();
-			
-			System.out.println("date:"  + LocalDate.now());
-			
+
+			System.out.println("date:" + LocalDate.now());
+
 			LoginManager loginManager = LoginManager.getInstance();
 
 			// ADMIN
@@ -79,13 +81,13 @@ public class Main {
 				CustomerFacade customerFacade = (CustomerFacade) facade;
 //				customerFacade.purchaseCoupon(new Coupon(11, 1, Category.FOOD, "cola is good for life", "good cola for good life",
 //						LocalDate.of(2022, 1, 1), LocalDate.of(2023, 1, 1), 500, 658.5, "fooooood"));
-				
+
 				System.out.println("getCustomerCoupons: " + customerFacade.getCustomerCoupons());
-				System.out.println("getCustomerCoupons by category: " + customerFacade.getCustomerCoupons(Category.FOOD));
+				System.out
+						.println("getCustomerCoupons by category: " + customerFacade.getCustomerCoupons(Category.FOOD));
 				System.out.println("getCustomerCoupons by maxPrice: " + customerFacade.getCustomerCoupons(1000));
 				System.out.println("getCustomerDetails: " + customerFacade.getCustomerDetails());
 
-				thread.stop();
 			}
 
 		} catch (CouponSystemException e) {

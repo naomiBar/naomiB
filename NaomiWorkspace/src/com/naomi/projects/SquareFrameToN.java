@@ -33,7 +33,7 @@ public class SquareFrameToN {
 	static void printingArray(int[][] arr, int len) {
 		for (int i= 0; i < len; i++) {
 			for (int j = 0; j < len; j++) {
-				System.out.print(arr[i][j]);
+				System.out.print(arr[i][j] + " ");
 			}
 			System.out.println();
 		}
