@@ -1,15 +1,15 @@
-package app.core;
+package person.core;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import app.core.beans.Person;
+import person.core.beans.Person;
 
-public class App {
+
+public class AppPerson {
 
 	public static void main(String[] args) {
-
-		//create spring container
-		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
+		//create spring container instance
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class); //config.class is a reference to the named class - in this care Config
 		
 		Person p1 = context.getBean(Person.class);
 		p1.setName("Naomi");
@@ -22,7 +22,7 @@ public class App {
 		System.out.println(p2);
 		System.out.println(p3);
 		
-		context.close();
+		context.close(); //context need to close,
 	}
 
 }
