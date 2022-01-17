@@ -1,16 +1,39 @@
 package person.core.beans;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
 //@Scope("singleton") //default
+@Primary
 public class Person {
 
 	private int id;
 	private String name;
 	private int age;
+
+	public Person() {
+	}
+	
+	
+	@Autowired
+	public Person(String name) {
+		super();
+		this.name = name;
+	}
+
+
+
+	public Person(int id, String name, int age) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.age = age;
+	}
+
 
 	public int getId() {
 		return id;
