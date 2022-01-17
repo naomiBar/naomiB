@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-import person.core.beans.Person;
 
 @Configuration
 @ComponentScan //scans classes in base package
@@ -43,7 +42,7 @@ public class AppPerson {
 	
 	@Bean
 	public Person getPerson() {
-		return new Person(101, "Naomi Bar", 21);
+		return new Person("Naomi Bar");
 	}
 
 }

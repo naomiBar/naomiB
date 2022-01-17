@@ -21,7 +21,7 @@ public class Test {
 	public static void testall() {
 		try {
 			CouponExpirationDailyJob job = new CouponExpirationDailyJob();
-			Thread thread = new Thread(job, "thread");
+			Thread thread = new Thread(job);
 			thread.start();
 			
 			LoginManager loginManager = LoginManager.getInstance();
@@ -35,6 +35,9 @@ public class Test {
 			System.out.println("CAUSE: " + e.getCause());
 		} finally {
 			try {
+				CouponExpirationDailyJob job = new CouponExpirationDailyJob();
+				job.stop();
+				
 				System.out.println("closeAllConnections:");
 				ConnectionPool.getInstance().closeAllConnections();
 				System.out.println("connectionPool down");
@@ -98,7 +101,6 @@ public class Test {
 					.println("getCustomerCoupons by category: " + customerFacade.getCustomerCoupons(Category.FOOD));
 			System.out.println("getCustomerCoupons by maxPrice: " + customerFacade.getCustomerCoupons(1000));
 			System.out.println("getCustomerDetails: " + customerFacade.getCustomerDetails());
-
 		}
 	}
 }

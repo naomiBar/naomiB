@@ -1,4 +1,4 @@
-package car.core.beans;
+package car.core;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;

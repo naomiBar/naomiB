@@ -1,4 +1,4 @@
-package person.core.beans;
+package person.core;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -6,9 +6,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
+@Primary
 @Scope("prototype")
 //@Scope("singleton") //default
-@Primary
 public class Person {
 
 	private int id;

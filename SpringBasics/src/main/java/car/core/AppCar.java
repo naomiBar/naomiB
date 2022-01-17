@@ -2,7 +2,6 @@ package car.core;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import car.core.beans.Car;
 
 public class AppCar {
 

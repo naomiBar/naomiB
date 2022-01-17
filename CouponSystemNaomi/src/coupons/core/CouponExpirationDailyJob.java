@@ -1,6 +1,7 @@
 package coupons.core;
 
 import java.time.LocalDate;
+import java.util.concurrent.TimeUnit;
 
 import coupons.core.DBDao.CouponsDBDao;
 import coupons.core.beans.Coupon;
@@ -30,15 +31,18 @@ public class CouponExpirationDailyJob implements Runnable {
 						couponsDao.deleteCoupon(coupon.getId());
 					}
 				}
+				TimeUnit.DAYS.sleep(1);
 			}
-		} catch (CouponSystemException e) {
+			System.out.println(">> stop the thread");
+		} catch (CouponSystemException | InterruptedException e) {
 			System.out.println(e.getMessage());
-		}
+		} 
 
 	}
 
 	public void stop() {
 		this.quit = true;
+		System.out.println(">> stop");
 	}
 
 }
