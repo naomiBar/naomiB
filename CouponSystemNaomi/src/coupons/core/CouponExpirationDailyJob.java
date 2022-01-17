@@ -21,6 +21,7 @@ public class CouponExpirationDailyJob implements Runnable {
 	public void run() {
 		try {
 			while (!quit) {
+				System.out.println(">> start");
 				for (Coupon coupon : couponsDao.getAllCoupons()) {
 					if (coupon.getEndDate().isAfter(LocalDate.now())) {
 						
@@ -31,6 +32,7 @@ public class CouponExpirationDailyJob implements Runnable {
 						couponsDao.deleteCoupon(coupon.getId());
 					}
 				}
+				System.out.println(">> start sleep");
 				TimeUnit.DAYS.sleep(1);
 			}
 			System.out.println(">> stop the thread");
