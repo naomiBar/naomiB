@@ -5,15 +5,15 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-public class BoatEngine implements Engine{
+public class CarEngine implements Engine{
 
 	@Override
 	public void switchOn() {
-		System.out.println("boat engine ON");
+		System.out.println("car engine ON");
 	}
 	
 	@Override
 	public void switchOff() {
-		System.out.println("boat engine OFF");
+		System.out.println("car engine OFF");
 	}
 }

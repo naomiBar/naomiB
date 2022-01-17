@@ -7,32 +7,32 @@ import org.springframework.stereotype.Component;
 
 import vehicle.core.engine.Engine;
 
-@Component("theBoat")
+@Component
 @Scope("prototype") //prototype means we have many instance
-public class Boat implements Vehicle{
+public class Airplane implements Vehicle{
 
 	static int c; //this is just for generating new car number
 	private int number = ++c;
 	
 	@Autowired
-	@Qualifier("boatEngine")
+	@Qualifier("airplaneEngine")
 	private Engine engine; //this is a dependency - helper class
 	
 	@Override
 	public void start() {
 		this.engine.switchOn();
-		System.out.println("starts boat " + number);
+		System.out.println("starts airplane " + number);
 	}
 
 	@Override
 	public void goTo(String destination) {
-		System.out.println("boat " + number + " going to " + destination);				
+		System.out.println("airplane " + number + " flying to " + destination);				
 	}
 
 	@Override
 	public void stop() {
 		this.engine.switchOff();
-		System.out.println("stops boat " + number);		
+		System.out.println("stops airplane " + number);		
 	}
 
 }
