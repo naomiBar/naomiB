@@ -35,9 +35,9 @@ public class Test {
 			System.out.println("CAUSE: " + e.getCause());
 		} finally {
 			try {
+				
 				CouponExpirationDailyJob job = new CouponExpirationDailyJob();
 				job.stop();
-
 				System.out.println("closeAllConnections:");
 				ConnectionPool.getInstance().closeAllConnections();
 				System.out.println("connectionPool down");
