@@ -1,4 +1,4 @@
-package coupons.core.facade;
+package coupons.core.login;
 
 public enum ClientType {
 	

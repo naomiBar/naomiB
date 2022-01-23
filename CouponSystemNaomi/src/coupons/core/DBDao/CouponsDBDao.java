@@ -75,23 +75,6 @@ public class CouponsDBDao implements CouponsDao {
 	}
 	
 	@Override
-	public void updateAmountCoupon(int amount, int couponId) throws CouponSystemException {
-		String sql = "update COUPONS set `amount` = ? where `id` = ?";
-		Connection con = connectionPool.getConnection();
-		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
-			pstmt.setInt(1, amount);
-			pstmt.setInt(2, couponId);
-			if (pstmt.executeUpdate() == 0) {
-				throw new CouponSystemException("update amount coupon " + couponId + " failed - not found");
-			}
-		} catch (SQLException e) {
-			throw new CouponSystemException("updateAmountCoupon failed", e);
-		} finally {
-			connectionPool.restoreConnection(con);
-		}
-	}
-
-	@Override
 	public void deleteCoupon(int couponId) throws CouponSystemException {
 		String sql = "delete from COUPONS where `id` = ?";
 		Connection con = connectionPool.getConnection();
@@ -184,30 +167,32 @@ public class CouponsDBDao implements CouponsDao {
 	}
 
 	@Override
-	public boolean isCouponExistsByCouponId(int couponId) throws CouponSystemException {
-		String sql = "select id from COUPONS where `id` = ?";
+	public boolean isCouponPurchaseExists(int customerId, int couponId) throws CouponSystemException {
+		String sql = "select * from CUSTOMERS_VS_COUPONS where `customer_id` =  ? AND `coupon_id` = ?";
 		Connection con = connectionPool.getConnection();
 		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
-			pstmt.setInt(1, couponId);
+			pstmt.setInt(1, customerId);
+			pstmt.setInt(2, couponId);
 			ResultSet rs = pstmt.executeQuery();
 			return rs.next();
 		} catch (SQLException e) {
-			throw new CouponSystemException("isCouponExistsByCouponId failed", e);
+			throw new CouponSystemException("isPurchaseCouponExists failed", e);
 		} finally {
 			connectionPool.restoreConnection(con);
 		}
 	}
 	
 	@Override
-	public boolean isCouponExistsByCompanyId(int companyId) throws CouponSystemException {
-		String sql = "select id from COUPONS where `company_id` = ?";
+	public boolean isCouponExistsByTitleOfCompany(int companyId, String title) throws CouponSystemException {
+		String sql = "select id from COUPONS where `company_id` = ? AND `title` =  ?";
 		Connection con = connectionPool.getConnection();
 		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
 			pstmt.setInt(1, companyId);
+			pstmt.setString(2, title);
 			ResultSet rs = pstmt.executeQuery();
 			return rs.next();
 		} catch (SQLException e) {
-			throw new CouponSystemException("isCouponExistsByCompanyId failed", e);
+			throw new CouponSystemException("isCouponExistsByTitle failed", e);
 		} finally {
 			connectionPool.restoreConnection(con);
 		}
@@ -230,72 +215,7 @@ public class CouponsDBDao implements CouponsDao {
 	} 
 	
 	@Override
-	public boolean isCouponExistsByTitleOfCompany(int companyId, String title) throws CouponSystemException {
-		String sql = "select id from COUPONS where `company_id` = ? AND `title` =  ?";
-		Connection con = connectionPool.getConnection();
-		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
-			pstmt.setInt(1, companyId);
-			pstmt.setString(2, title);
-			ResultSet rs = pstmt.executeQuery();
-			return rs.next();
-		} catch (SQLException e) {
-			throw new CouponSystemException("isCouponExistsByTitle failed", e);
-		} finally {
-			connectionPool.restoreConnection(con);
-		}
-	}
-	
-	
-	@Override
-	public boolean isCouponPurchaseExistsByCompanyId(int companyId) throws CouponSystemException {
-		String sql = "select * from CUSTOMERS_VS_COUPONS where `coupon_id` in(select id from COUPONS where `company_id` = ?)";
-		Connection con = connectionPool.getConnection();
-		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
-			pstmt.setInt(1, companyId);
-			ResultSet rs = pstmt.executeQuery();
-			return rs.next();
-		} catch (SQLException e) {
-			throw new CouponSystemException("deleteCompanyCouponPurchase failed", e);
-		} finally {
-			connectionPool.restoreConnection(con);
-		}
-	}
-	
-	
-	@Override
-	public void deleteCompanyCouponPurchase(int companyId) throws CouponSystemException {
-		String sql = "delete from CUSTOMERS_VS_COUPONS where `coupon_id` in(select id from COUPONS where `company_id` = ?)";
-		Connection con = connectionPool.getConnection();
-		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
-			pstmt.setInt(1, companyId);
-			if (pstmt.executeUpdate() == 0) {
-				throw new CouponSystemException("delete coupons purchase of company " + companyId + " failed - not found");
-			}	
-		} catch (SQLException e) {
-			throw new CouponSystemException("deleteCompanyCouponPurchase failed", e);
-		} finally {
-			connectionPool.restoreConnection(con);
-		}
-	}
-	
-	@Override
-	public void deleteCouponsOfCompany(int companyId) throws CouponSystemException {
-		String sql = "delete from COUPONS where `company_id` = ?";
-		Connection con = connectionPool.getConnection();
-		try (PreparedStatement pstmt = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
-			pstmt.setInt(1, companyId);
-			if (pstmt.executeUpdate() == 0) {
-				throw new CouponSystemException("delete coupons of company " + companyId + " failed - not found");
-			}
-		} catch (SQLException e) {
-			throw new CouponSystemException("deleteCouponsOfCompany failed", e);
-		} finally {
-			connectionPool.restoreConnection(con);
-		}
-	}
-	
-	@Override
-	public boolean isCouponPurchaseExistsByCouponId(int couponId) throws CouponSystemException {
+	public boolean isCouponsPurchaseExistsByCouponId(int couponId) throws CouponSystemException {
 		String sql = "select * from CUSTOMERS_VS_COUPONS where `coupon_id` =  ?";
 		Connection con = connectionPool.getConnection();
 		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
@@ -310,7 +230,7 @@ public class CouponsDBDao implements CouponsDao {
 	}
 	
 	@Override
-	public void deleteCouponPurchase(int couponId) throws CouponSystemException {
+	public void deleteCouponPurchaseByCouponId(int couponId) throws CouponSystemException {
 		String sql = "delete from CUSTOMERS_VS_COUPONS where `coupon_id` = ?";
 		Connection con = connectionPool.getConnection();
 		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
@@ -324,4 +244,52 @@ public class CouponsDBDao implements CouponsDao {
 			connectionPool.restoreConnection(con);
 		}
 	}
+	
+	@Override
+	public boolean isCouponExistsByCouponId(int couponId) throws CouponSystemException {
+		String sql = "select id from COUPONS where `id` = ?";
+		Connection con = connectionPool.getConnection();
+		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+			pstmt.setInt(1, couponId);
+			ResultSet rs = pstmt.executeQuery();
+			return rs.next();
+		} catch (SQLException e) {
+			throw new CouponSystemException("isCouponExistsByCouponId failed", e);
+		} finally {
+			connectionPool.restoreConnection(con);
+		}
+	}
+	
+	
+	@Override
+	public void updateAmountCoupon(int amount, int couponId) throws CouponSystemException {
+		String sql = "update COUPONS set `amount` = ? where `id` = ?";
+		Connection con = connectionPool.getConnection();
+		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+			pstmt.setInt(1, amount);
+			pstmt.setInt(2, couponId);
+			if (pstmt.executeUpdate() == 0) {
+				throw new CouponSystemException("update amount coupon " + couponId + " failed - not found");
+			}
+		} catch (SQLException e) {
+			throw new CouponSystemException("updateAmountCoupon failed", e);
+		} finally {
+			connectionPool.restoreConnection(con);
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

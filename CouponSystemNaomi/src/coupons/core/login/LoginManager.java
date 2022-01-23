@@ -1,6 +1,10 @@
-package coupons.core.facade;
+package coupons.core.login;
 
 import coupons.core.exceptions.CouponSystemException;
+import coupons.core.facade.AdminFacade;
+import coupons.core.facade.ClientFacade;
+import coupons.core.facade.CompanyFacade;
+import coupons.core.facade.CustomerFacade;
 
 public class LoginManager {
 

@@ -19,5 +19,13 @@ public abstract class ClientFacade {
 		this.customersDao = new CustomersDBDao();
 		this.couponsDao = new CouponsDBDao();
 	}
+	
+	/**
+	 * check if a client (ADMINISTRATOR, COMPANY, CUSTOMER) can login by email and password.
+	 * @param email
+	 * @param password
+	 * @return if the client can login true, else false
+	 * @throws CouponSystemException
+	 */
 	public abstract boolean login(String email, String password) throws CouponSystemException;
 }

@@ -11,10 +11,10 @@ import coupons.core.beans.Customer;
 import coupons.core.exceptions.CouponSystemException;
 import coupons.core.facade.AdminFacade;
 import coupons.core.facade.ClientFacade;
-import coupons.core.facade.ClientType;
 import coupons.core.facade.CompanyFacade;
 import coupons.core.facade.CustomerFacade;
-import coupons.core.facade.LoginManager;
+import coupons.core.login.ClientType;
+import coupons.core.login.LoginManager;
 
 public class Test {
 

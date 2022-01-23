@@ -27,7 +27,6 @@ public class ConnectionPool {
 		for (int i = 0; i < SIZE; i++) {
 			Connection connection = DriverManager.getConnection(dbUrl, user, password);
 			connections.add(connection);
-//			System.out.println(connection);
 		}
 		this.isOpen = true;
 	}
@@ -47,11 +46,17 @@ public class ConnectionPool {
 		return isOpen;
 	}
 
+	/**
+	 * removes one Connection object from the repository and returns it by return so
+	 * that it can be used to perform operations on the database.
+	 * @return a connection object from the repository
+	 * @throws CouponSystemException
+	 */
 	public synchronized Connection getConnection() throws CouponSystemException {
-		if(!isOpen) {
+		if (!isOpen) {
 			throw new CouponSystemException("getConnection failed - pool is closed");
 		}
-		while(connections.isEmpty()) {
+		while (connections.isEmpty()) {
 			try {
 				wait();
 			} catch (InterruptedException e) {
@@ -63,17 +68,26 @@ public class ConnectionPool {
 		it.remove();
 		return connection;
 	}
-	
+
+	/**
+	 * accepts as an argument one Connection object that has been vacated and
+	 * returns it to the repository.
+	 * @param connection
+	 */
 	public synchronized void restoreConnection(Connection connection) {
 		this.connections.add(connection);
 		notify();
 		System.out.println("restoreConnection");
 	}
-	
+
+	/**
+	 * closes all Connections in terms of database.
+	 * @throws CouponSystemException
+	 */
 	public synchronized void closeAllConnections() throws CouponSystemException {
 		this.isOpen = false;
-		//wait to all connections that return to the pool
-		while(this.connections.size() < SIZE) {
+		// wait to all connections that return to the pool
+		while (this.connections.size() < SIZE) {
 			try {
 				wait();
 			} catch (InterruptedException e) {

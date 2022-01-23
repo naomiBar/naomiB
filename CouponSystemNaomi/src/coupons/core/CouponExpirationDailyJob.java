@@ -24,9 +24,9 @@ public class CouponExpirationDailyJob implements Runnable {
 				for (Coupon coupon : couponsDao.getAllCoupons()) {
 					if (coupon.getEndDate().isAfter(LocalDate.now())) {
 						
-						if (couponsDao.isCouponPurchaseExistsByCouponId(coupon.getId())) {
+						if (couponsDao.isCouponsPurchaseExistsByCouponId(coupon.getId())) {
 							System.out.println("isCouponPurchaseExistsByCouponId");
-							couponsDao.deleteCouponPurchase(coupon.getId());
+							couponsDao.deleteCouponPurchaseByCouponId(coupon.getId());
 						}
 						couponsDao.deleteCoupon(coupon.getId());
 					}
