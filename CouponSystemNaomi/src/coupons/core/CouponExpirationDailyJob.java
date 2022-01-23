@@ -12,17 +12,23 @@ public class CouponExpirationDailyJob implements Runnable {
 
 	private CouponsDao couponsDao;
 	private boolean quit;
+	private Thread thread;
 
 	public CouponExpirationDailyJob() throws CouponSystemException {
 		this.couponsDao = new CouponsDBDao();
+		this.thread = new Thread(this, "daily_job");
 	}
 
+	public void startDailyJob() {
+		this.thread.start();
+	}
+	
 	@Override
 	public void run() {
 		try {
 			while (!quit) {
 				for (Coupon coupon : couponsDao.getAllCoupons()) {
-					if (coupon.getEndDate().isAfter(LocalDate.now())) {
+					if (LocalDate.now().isAfter(coupon.getEndDate())) {
 						
 						if (couponsDao.isCouponsPurchaseExistsByCouponId(coupon.getId())) {
 							System.out.println("isCouponPurchaseExistsByCouponId");
@@ -38,9 +44,11 @@ public class CouponExpirationDailyJob implements Runnable {
 		} 
 	}
 
-	public void stop() {
+
+	public void stopDailyJob() {
 		this.quit = true;
-		System.out.println(">> stop");
+		this.thread.interrupt();
 	}
+	
 
 }

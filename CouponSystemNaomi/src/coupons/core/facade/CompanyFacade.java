@@ -1,5 +1,6 @@
 package coupons.core.facade;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,9 +27,10 @@ public class CompanyFacade extends ClientFacade {
 	 * adds the coupon and set the id of the parameter and return the id. 
 	 * @param coupon to be added
 	 * @return the generated id
-	 * @throws CouponSystemException if the coupon's features are null or
-	 * 			this.companyId not equals to coupon's companyId or
-	 * 			companyId and title of the coupon are taken
+	 * @throws CouponSystemException if the coupon's features are null,
+	 * 			or if coupon's expiration date has already been reached,
+	 * 			or this.companyId not equals to coupon's companyId,
+	 * 			or companyId and title of the coupon are taken
 	 */
 	public int addCoupon(Coupon coupon) throws CouponSystemException {
 		//check if coupon's features are not null:
@@ -36,6 +38,10 @@ public class CompanyFacade extends ClientFacade {
 				|| coupon.getDescription() == null || coupon.getStartDate() == null || coupon.getEndDate() == null
 				|| coupon.getAmount() == 0 || coupon.getPrice() == 0 || coupon.getImage() == null) {
 			throw new CouponSystemException("addCoupon failed - impossible add coupon with null features");
+		}
+		//check if coupon's expiration date has already been reached:
+		if(LocalDate.now().isAfter(coupon.getEndDate())) {
+			throw new CouponSystemException("addCoupon failed - The coupon has expired");			
 		}
 		//check if this.companyId equals to coupon's companyId:
 		if(this.companyId != coupon.getCompanyId()) {

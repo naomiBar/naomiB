@@ -30,8 +30,8 @@ public class CustomerFacade extends ClientFacade {
 	 * @param coupon
 	 * @throws CouponSystemException if couponPurcahse exist already,
 	 * 			 or if the coupon amount is 0,
-	 * 			 or if coupon's expiration date has already been reached,
-	 * 			 or if coupon not exist by id.
+	 * 			 or if coupon not exist by id,
+	 * 			 or if coupon's expiration date has already been reached.
 	 */
 	public void purchaseCoupon(Coupon coupon) throws CouponSystemException {
 		//check if couponPurcahse exist already by id and customerId:
@@ -42,13 +42,13 @@ public class CustomerFacade extends ClientFacade {
 		if (coupon.getAmount() == 0) {
 			throw new CouponSystemException("purchaseCoupon failed - There are no coupons left to purchase");			
 		}
-		//check if coupon's expiration date has already been reached:
-		if(coupon.getEndDate().isBefore(LocalDate.now())) {
-			throw new CouponSystemException("purchaseCoupon failed - The coupon has expired");			
-		}
 		//check if coupon exist by id:
 		if(!couponsDao.isCouponExistsByCouponId(coupon.getId())) {
 			throw new CouponSystemException("purchaseCoupon failed - coupon " + coupon.getId() + " not exists");						
+		}
+		//check if coupon's expiration date has already been reached:
+		if(LocalDate.now().isAfter(coupon.getEndDate())) {
+			throw new CouponSystemException("purchaseCoupon failed - The coupon has expired");			
 		}
 		couponsDao.addCouponPurchase(customerId, coupon.getId());
 		coupon.setAmount(coupon.getAmount() - 1);
