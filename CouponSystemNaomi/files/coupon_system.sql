@@ -40,3 +40,7 @@ select * from customers_vs_coupons;
 select * from coupons;
 
 drop schema coupon_system;
+
+select * from CUSTOMERS where `id` =  1;
+
+update CUSTOMERS set `first_name` = 'Naomi', `last_name` = 'Bar', `email` = 'naomibar@gmail.com', `password` = '1234' where `id` = 5

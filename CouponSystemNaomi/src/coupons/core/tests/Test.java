@@ -40,7 +40,6 @@ public class Test {
 				if(dailyJob!=null) {
 					dailyJob.stopDailyJob();
 				}
-				
 				System.out.println("closeAllConnections:");
 				ConnectionPool.getInstance().closeAllConnections();
 				System.out.println("connectionPool down");
