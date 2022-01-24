@@ -17,8 +17,7 @@ public class ConnectionPool {
 
 	private String dbUrl = "jdbc:mysql://localhost:3306/coupon_system";
 	private String user = "root";
-	private String password = "1234";  //johnBryce computer
-//	private String password = "Nbar2000"; //myComputer
+	private String password = "1234";
 
 	private static ConnectionPool instance;
 
