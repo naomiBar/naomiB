@@ -10,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
@@ -20,7 +22,7 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = "reviews")
+@ToString(exclude = {"reviews", "customers"})
 @Entity
 public class Coupon {
 
@@ -33,11 +35,19 @@ public class Coupon {
 	@JoinColumn(name = "coupon_id") // the FK is generated in review table
 	private List<Review> reviews;
 	
-	public void addReview(Review review) {
-		if(this.reviews == null) {
-			this.reviews = new ArrayList<>();
+	//the customers who bought this coupon:
+	@ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+	@JoinTable(name = "customer_coupon", //name of join table
+	joinColumns = @JoinColumn(name = "coupon_id"), //join table FK column for current entity
+	inverseJoinColumns = @JoinColumn(name = "customer_id")) //join table FK column for inverse entity
+	private List<Customer> customers;
+	
+	
+	public void addCustomer(Customer customer) {
+		if(this.customers == null) {
+			this.customers = new ArrayList<>();
 		}
-		this.reviews.add(review);
+		this.customers.add(customer);
 	}
 
 }
