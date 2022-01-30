@@ -23,22 +23,28 @@ public class LibraryService {
 	private LibraryRepo libraryRepo;
 	
 	public int addLibrary(Library library) {
+		if(this.libraryRepo.existsById(library.getId())) {
+			throw new RuntimeException("addLibrary failed - library id " + library.getId() + " already exists");			
+		}
 		library = libraryRepo.save(library);
-		return library.getId();
+		return library.getId();			
 	}
 	
 	public int addBook(Book book) {
+		if(this.bookRepo.existsById(book.getId())) {
+			throw new RuntimeException("addBook failed - book id " + book.getId() + " already exists");			
+		}
 		book = bookRepo.save(book);
 		return book.getId();
 	}
 	
 	public void addBookToLibrary(Book book, int libraryId) {
 		Optional<Library> opt = this.libraryRepo.findById(libraryId);
-		if(opt.isPresent()) {
+		if(opt.isPresent() && !this.bookRepo.existsById(book.getId())) {
 			Library library = opt.get();
 			library.addBook(book);
 		}else {
-			throw new RuntimeException("addBookToLibrary failed - NOT found library " + libraryId);
+			throw new RuntimeException("addBookToLibrary failed - NOT found library " + libraryId + " or book id " + book.getId() + " already exists");
 		}
 	}
 	
@@ -94,7 +100,7 @@ public class LibraryService {
 	}
 	
 	public List<Book> getBooksByPublicationBetween(LocalDate startDate, LocalDate endDate){
-		return this.bookRepo.findBooksByPublicationBetween(startDate, endDate); 
+		return this.bookRepo.findBooksByPublicationBetweenOrderByPublication(startDate, endDate); 
 	}
 	
 	public List<Book> getBooksByAuthorStartingWith(String prefix){

@@ -17,7 +17,7 @@ public interface BookRepo extends JpaRepository<Book, Integer>{
 	
 	List<Book> findBooksByPublicationAfter(LocalDate date);
 	
-	List<Book> findBooksByPublicationBetween(LocalDate startDate, LocalDate endDate);
+	List<Book> findBooksByPublicationBetweenOrderByPublication(LocalDate startDate, LocalDate endDate);
 	
 	List<Book> findBooksByAuthorStartingWith(String prefix);
 }
