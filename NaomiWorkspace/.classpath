@@ -8,5 +8,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Naomi/NaomiWorkspace/converters.jar"/>
 	<classpathentry kind="lib" path="C:/Naomi/sql/mysql-connector-java-8.0.27/mysql-connector-java-8.0.27.jar"/>
+	<classpathentry kind="lib" path="C:/Naomi/eclipse/lombok.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
