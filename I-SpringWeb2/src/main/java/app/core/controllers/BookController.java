@@ -56,7 +56,7 @@ public class BookController {
 	public ResponseEntity<?> updateBook(@RequestBody Book book){
 		try {
 			this.bookService.updateBook(book);
-			return ResponseEntity.ok("book updated: " + book);
+			return ResponseEntity.ok("book updated");
 		}catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
