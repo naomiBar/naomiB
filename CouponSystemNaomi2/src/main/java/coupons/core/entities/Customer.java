@@ -45,8 +45,7 @@ public class Customer {
 	@Column(nullable = false)
 	private String password;
 
-	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-//	@ManyToMany(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@ManyToMany(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JoinTable(name = "customers_coupons", joinColumns = @JoinColumn(name = "customer_id"), inverseJoinColumns = @JoinColumn(name = "coupon_id"))
 	private List<Coupon> coupons;
 
@@ -55,6 +54,5 @@ public class Customer {
 			this.coupons = new ArrayList<>();
 		}
 		this.coupons.add(coupon);
-		coupon.addCustomer(this);
 	}
 }

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Store</title>
+    <style>
+        body{
+            background-color: darksalmon;
+        }
+        label{
+            width: 35px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to my store!</h1>
+
+    <fieldset>
+        <legend>Store Of Items</legend>
+
+        <label for="id">id</label>
+        <input id = "id" type="number">
+        <br>
+        <label for="name">name</label>
+        <input id = "name" type="text">
+        <br>
+        <label for="price">price</label>
+        <input id = "price" type="number">
+        <br>
+        <div>
+            <button onclick="save()">Save</button>
+            <button onclick="getOne()">Get One</button>
+            <button onclick="getAll()">Get All</button>
+            <button onclick="update()">Update</button>
+            <button onclick="deleteOne()">Delete</button>
+            <button onclick="deleteAll()">Delete All</button>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Response from Server</legend>
+        <div id="resp"></div>
+    </fieldset>
+
+    <script>
+
+        class Item{
+            constructor(id, name, price){
+                this.id = id;
+                this.name = name;
+                this.price = price;
+            }
+        }
+
+        /*     === XMLHttpRequest.readyState: ===
+        Value: |    State:	             |   Description:
+        -------------------------------------------------------------------
+        0	   |    UNSENT	             |   Client has been created. open() not called yet.
+        1	   |    OPENED	             |   open() has been called.
+        2	   |    HEADERS_RECEIVED	 |   send() has been called, and headers and status are available.
+        3	   |    LOADING	Downloading; |   responseText holds partial data.
+        4	   |    DONE	             |   The operation is complete. */
+
+        function save(){
+            let id = document.getElementById("id").value;
+            let name = document.getElementById("name").value;
+            let price = document.getElementById("price").value;
+            if(name == "" || price == ""){
+                alert("you must enter name and price to add item");
+                return;
+            }
+            let item = new Item(id, name, price);
+            let itemAsJson = JSON.stringify(item);
+
+            document.getElementById("resp").style.color = "black";
+            //create an object that can make http request:
+            let xhttp = new XMLHttpRequest();
+            //define what to do on ready state change(steps 1-4):
+            xhttp.onreadystatechange = function() {
+                if(this.readyState == 4){
+                    if(this.status == 200){
+                        document.getElementById("resp").innerHTML = "item " + this.response + " added";
+                    }else{
+                        //parse the error JSON (text) to JS object:
+                        let error = JSON.parse(this.response);
+                        //print to see object fields:
+                        console.log(error);
+                        //display the error message field on the document:
+                        document.getElementById("resp").style.color = "red";
+                        document.getElementById("resp").innerHTML = "ERROR: " + error.status + " - " + error.error + "<br>" + error.message;
+                    }
+                }
+            }
+            //define the request - http method and url:
+            xhttp.open("POST", "http://localhost:8080/items");
+            xhttp.setRequestHeader("Content-Type", "application/json");
+            //send the request:
+            xhttp.send(itemAsJson); //we put the JSON in the request body
+        }
+
+        function getOne(){
+            let itemId = document.getElementById("id").value;
+            if(itemId == ""){
+                alert("you must enter id");
+                return;
+            }
+            document.getElementById("resp").style.color = "black";
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if(this.readyState == 4){
+                    if(this.status == 200){
+                        document.getElementById("resp").innerHTML = "";
+                        let item = [JSON.parse(this.response)];
+                        create_table(item);
+                    }else{
+                        let error = JSON.parse(this.response);
+                        document.getElementById("resp").style.color = "red";
+                        document.getElementById("resp").innerHTML = "ERROR: " + error.status + " - " + error.error + "<br>" + error.message;
+                    }
+                }
+            }
+            xhttp.open("GET", "http://localhost:8080/items/" + itemId);
+            xhttp.send();
+        }
+
+        function getAll(){
+            document.getElementById("resp").style.color = "black";
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function(){
+                if(this.readyState == 4){
+                    if(this.status == 200){
+                        document.getElementById("resp").innerHTML = "";
+                        let items = JSON.parse(this.response);
+                        if(items.length > 0){
+                            create_table(items);
+                        }else{
+                            document.getElementById("resp").innerHTML = "No items in the store"; 
+                        }
+                    }else{
+                        alert("ERROR");
+                    }
+                }
+            }
+            xhttp.open("GET", "http://localhost:8080/items", false);
+            xhttp.send();
+        }
+
+
+        function update(){
+            let id = document.getElementById("id").value;
+            let name = document.getElementById("name").value;
+            let price = document.getElementById("price").value;
+            if(id == "" || name == "" || price == ""){
+                alert("you must enter all the fields to update");
+                return;
+            }
+            let item = new Item(id, name, price);
+            let itemAsJson = JSON.stringify(item);
+            
+            document.getElementById("resp").style.color = "black";
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if(this.readyState == 4){
+                    if(this.status == 200){
+                        document.getElementById("resp").innerHTML = "item " + id + " updated";
+                    }else{
+                        let error = JSON.parse(this.response);
+                        document.getElementById("resp").style.color = "red";
+                        document.getElementById("resp").innerHTML = "ERROR: " + error.status + " - " + error.error + "<br>" + error.message;
+                    }
+                }
+            }
+            xhttp.open("PUT", "http://localhost:8080/items");
+            xhttp.setRequestHeader("Content-Type", "application/json");
+            xhttp.send(itemAsJson); //we put the JSON in the request body
+        }
+
+
+        function deleteOne(){
+            let itemId = document.getElementById("id").value;
+            if(itemId == ""){
+                alert("you must enter id");
+                return;
+            }
+            document.getElementById("resp").style.color = "black";
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if(this.readyState == 4){
+                    if(this.status == 200){
+                        document.getElementById("resp").innerHTML = "item " + itemId + " deleted";
+                    }else{
+                        let error = JSON.parse(this.response);
+                        document.getElementById("resp").style.color = "red";
+                        document.getElementById("resp").innerHTML = "ERROR: " + error.status + " - " + error.error + "<br>" + error.message;
+                    }
+                }
+            }
+            xhttp.open("DELETE", "http://localhost:8080/items/" + itemId);
+            xhttp.send();
+        }
+
+
+        function deleteAll(){
+            document.getElementById("resp").style.color = "black";
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function(){
+                if(this.readyState == 4){
+                    if(this.status == 200){                         
+                        document.getElementById("resp").innerHTML = "All items were deleted";
+                    }else{
+                        alert("ERROR");
+                    }
+                }
+            }
+            xhttp.open("DELETE", "http://localhost:8080/items");
+            xhttp.send();
+        }
+
+
+        function create_table(items) {
+            let table = document.createElement('table');
+            let thead = document.createElement('thead');
+            let tbody = document.createElement('tbody');
+
+            //Creating and adding data to first row of the table
+            let row_1 = document.createElement('tr');
+
+            let heading_1 = document.createElement('th');
+            heading_1.innerHTML = "Id";
+            row_1.appendChild(heading_1);
+
+            let heading_2 = document.createElement('th');
+            heading_2.innerHTML = "Name";
+            row_1.appendChild(heading_2);
+            
+            let heading_3 = document.createElement('th');
+            heading_3.innerHTML = "Price";
+            row_1.appendChild(heading_3);
+
+            thead.appendChild(row_1);
+
+            //Creating and adding data to second row of the table
+            items.forEach(item => {
+                let row = document.createElement('tr');
+
+                let data_1 = document.createElement('td');
+                data_1.innerHTML = item.id;
+                row.appendChild(data_1);
+
+                let data_2 = document.createElement('td');
+                data_2.innerHTML = item.name;
+                row.appendChild(data_2);
+
+                let data_3 = document.createElement('td');
+                data_3.innerHTML = item.price;
+                row.appendChild(data_3);
+
+                tbody.appendChild(row);
+            });
+            table.appendChild(thead);
+            table.appendChild(tbody);
+            table.setAttribute("border", "2");
+
+            //Adding the entire table to the body tag - 'resp'
+            document.getElementById('resp').appendChild(table);
+        }
+    </script>
+</body>
+</html>

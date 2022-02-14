@@ -1,15 +1,12 @@
 package coupons.core.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import coupons.core.repositories.CompanyRepository;
 import coupons.core.repositories.CouponRepository;
 import coupons.core.repositories.CustomerRepository;
 
-@Service
-@Transactional
+
 public abstract class ClientService {
 
 	@Autowired

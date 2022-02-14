@@ -1,6 +1,5 @@
 package coupons.core.services;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -50,8 +49,7 @@ public class CustomerService extends ClientService{
 	 * @param couponId
 	 * @throws CouponSystemException if coupon not exist by id,
 	 * 			 or if couponPurcahse exist already,
-	 * 			 or if the coupon amount is 0,
-	 * 			 or if coupon's expiration date has already been reached.
+	 * 			 or if the coupon amount is 0.
 	 */
 	public void purchaseCoupon(int couponId) throws CouponSystemException {
 		//check if coupon exist by id:
@@ -69,14 +67,8 @@ public class CustomerService extends ClientService{
 				throw new CouponSystemException("purchaseCoupon failed - There are no coupons left to purchase");			
 			}
 			
-			//check if coupon's expiration date has already been reached:
-			if(LocalDate.now().isAfter(coupon.getEndDate())) {
-				throw new CouponSystemException("purchaseCoupon failed - The coupon has expired");			
-			}
-			
 			getCustomerDetails().addCoupon(coupon);
 			coupon.setAmount(coupon.getAmount() - 1);
-			
 		}else {
 			throw new CouponSystemException("purchaseCoupon failed - coupon " + couponId + " NOT found");
 		}
@@ -88,11 +80,11 @@ public class CustomerService extends ClientService{
 	 * @throws CouponSystemException
 	 */
 	public List<Coupon> getCustomerCoupons() throws CouponSystemException {
-		List<Coupon> coupons = getCustomerDetails().getCoupons();
-		System.out.println("~~~~~~ " + coupons);
-		return coupons;
+//		List<Coupon> coupons = getCustomerDetails().getCoupons();
+//		System.out.println("~~~~~~ " + coupons);
+//		return coupons;
 		
-//		return getCustomerDetails().getCoupons();
+		return this.couponRepository.findCouponsByCustomersId(customerId);
 	}
 	
 	

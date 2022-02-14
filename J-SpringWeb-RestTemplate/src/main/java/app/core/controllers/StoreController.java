@@ -20,7 +20,7 @@ import app.core.exceptions.StoreExceptions;
 import app.core.service.StoreService;
 
 @RestController
-@RequestMapping("/api/store") //http://localhost:8080/store
+@RequestMapping("/api/store") //http://localhost:8080/api/store
 public class StoreController {
 
 	@Autowired

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import coupons.core.exceptions.CouponSystemException;
 import coupons.core.services.ClientService;
 
 @Component
@@ -14,7 +15,7 @@ public class LoginManager {
 	
 	
 
-	public ClientService login(String email, String password, ClientType clientType) {
+	public ClientService login(String email, String password, ClientType clientType) throws CouponSystemException {
 		ClientService clientService;
 		switch (clientType) {
 		case ADMINISTRATOR:
@@ -27,7 +28,7 @@ public class LoginManager {
 			clientService = ctx.getBean("customerService",ClientService.class);
 			break;
 		default:
-			return null;
+			throw new CouponSystemException("illegal client");
 		}
 		if (clientService.login(email, password)) {
 			return clientService;
