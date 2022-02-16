@@ -10,6 +10,8 @@ import coupons.core.entities.Coupon;
 public interface CouponRepository extends JpaRepository<Coupon, Integer> {
 
 	boolean existsByTitleAndCompanyId(String title, int companyId);
+	boolean existsByIdAndCompanyId(int couponId, int companyId);
+	
 	List<Coupon> findCouponsByCompanyId(int companyId);
 	List<Coupon> findCouponsByCustomersId(int customerId);
 	

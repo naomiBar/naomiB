@@ -20,6 +20,10 @@ public class CustomerService extends ClientService{
 
 	private int customerId;
 	
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
+	}
+
 	@Override
 	public boolean login(String email, String password) {
 		Optional<Customer> opt = this.customerRepository.findCustomerByEmailAndPassword(email, password);
@@ -77,13 +81,8 @@ public class CustomerService extends ClientService{
 	/**
 	 * return all the customer's coupons in the DB.
 	 * @return a list of all customer's coupons
-	 * @throws CouponSystemException
 	 */
-	public List<Coupon> getCustomerCoupons() throws CouponSystemException {
-//		List<Coupon> coupons = getCustomerDetails().getCoupons();
-//		System.out.println("~~~~~~ " + coupons);
-//		return coupons;
-		
+	public List<Coupon> getCustomerCoupons() {
 		return this.couponRepository.findCouponsByCustomersId(customerId);
 	}
 	
@@ -92,9 +91,8 @@ public class CustomerService extends ClientService{
 	 * return all the customer's coupons from a specific category in the DB.
 	 * @param category
 	 * @return a list of all the customer's coupons from a specific category
-	 * @throws CouponSystemException
 	 */
-	public List<Coupon> getCustomerCoupons(Category category) throws CouponSystemException {
+	public List<Coupon> getCustomerCoupons(Category category) {
 		List<Coupon> coupons = new ArrayList<>();
 		for (Coupon coupon : getCustomerCoupons()) {
 			if(coupon.getCategory() == category ) {
@@ -109,9 +107,8 @@ public class CustomerService extends ClientService{
 	 * return all the customer's coupons up to maximum price in the DB.
 	 * @param maxPrice
 	 * @return a list of all the customer's coupons up to maximum price
-	 * @throws CouponSystemException
 	 */
-	public List<Coupon> getCustomerCoupons(double maxPrice) throws CouponSystemException {
+	public List<Coupon> getCustomerCoupons(double maxPrice) {
 		List<Coupon> coupons = new ArrayList<>();
 		for (Coupon coupon : getCustomerCoupons	()) {
 			if(coupon.getPrice() <= maxPrice ) {

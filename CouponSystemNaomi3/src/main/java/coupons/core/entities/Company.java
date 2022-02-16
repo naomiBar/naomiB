@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -40,6 +42,7 @@ public class Company {
 	@Column(nullable = false)
 	private String password;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
 	private List<Coupon> coupons;
 

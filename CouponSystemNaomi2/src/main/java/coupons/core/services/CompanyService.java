@@ -58,16 +58,14 @@ public class CompanyService extends ClientService {
 			Company company = this.getCompanyDetails();
 			company.addCoupon(coupon);
 		} else {
-			throw new CouponSystemException("addCoupon failed - title already exists for this coupon id");
+			throw new CouponSystemException("addCoupon failed - title already exists for this company");
 		}
 	}
 
 	/**
 	 * update a coupon
-	 * 
 	 * @param coupon to be updated
-	 * @throws CouponSystemException if the coupon's features are null or the id not
-	 *                               exists
+	 * @throws CouponSystemException if the coupon's features are null or the coupon not exists by id and companyId
 	 */
 	public void updateCoupon(Coupon coupon) throws CouponSystemException {
 		// check if coupon's features are not null:
@@ -76,33 +74,31 @@ public class CompanyService extends ClientService {
 				|| coupon.getPrice() == 0 || coupon.getImage() == null) {
 			throw new CouponSystemException("updateCoupon failed - impossible update coupon with null features");
 		}
-		// check if coupon exists by id:
-		if (this.couponRepository.existsById(coupon.getId())) {
+		// check if coupon exists by id and companyId:
+		if(this.couponRepository.existsByIdAndCompanyId(coupon.getId(), this.companyId)) {
 			coupon.setCompany(getCompanyDetails());
 			this.couponRepository.save(coupon);
 		} else {
-			throw new CouponSystemException("updateCoupon failed - coupon id " + coupon.getId() + " NOT found");
+			throw new CouponSystemException("updateCoupon failed - coupon id " + coupon.getId() + " NOT exist in this company ");
 		}
 	}
 
 	/**
 	 * delete a coupon by id
-	 * 
 	 * @param couponId
-	 * @throws CouponSystemException if coupon's id not found
+	 * @throws CouponSystemException if the coupon not exists by id and companyId
 	 */
 	public void deleteCoupon(int couponId) throws CouponSystemException {
-		// check if coupon exists by id:
-		if (this.couponRepository.existsById(couponId)) {
+		// check if coupon exists by id and companyId:
+		if (this.couponRepository.existsByIdAndCompanyId(couponId, this.companyId)) {
 			this.couponRepository.deleteById(couponId);
 		} else {
-			throw new CouponSystemException("deleteCoupon failed - coupon id " + couponId + " NOT found");
+			throw new CouponSystemException("deleteCoupon failed - coupon id " + couponId + " NOT exist in this company ");
 		}
 	}
 
 	/**
 	 * return company's details.
-	 * 
 	 * @return the company
 	 * @throws CouponSystemException if company's id not found
 	 */
@@ -116,26 +112,18 @@ public class CompanyService extends ClientService {
 
 	/**
 	 * return all the company's coupons in the DB.
-	 * 
 	 * @return a list of all company's coupons
-	 * @throws CouponSystemException
 	 */
-	public List<Coupon> getCompanyCoupons() throws CouponSystemException {
-//		List<Coupon> coupons = getCompanyDetails().getCoupons();
-//		System.out.println("~~~~~~ " + coupons);
-//		return coupons;
-
+	public List<Coupon> getCompanyCoupons() {
 		return this.couponRepository.findCouponsByCompanyId(companyId);
 	}
 
 	/**
 	 * return all the company's coupons from a specific category in the DB.
-	 * 
 	 * @param category
 	 * @return a list of all the company's coupons from a specific category
-	 * @throws CouponSystemException
 	 */
-	public List<Coupon> getCompanyCoupons(Category category) throws CouponSystemException {
+	public List<Coupon> getCompanyCoupons(Category category) {
 		List<Coupon> coupons = new ArrayList<>();
 		for (Coupon coupon : getCompanyCoupons()) {
 			if (coupon.getCategory() == category) {
@@ -147,12 +135,10 @@ public class CompanyService extends ClientService {
 
 	/**
 	 * return all the company's coupons up to maximum price in the DB.
-	 * 
 	 * @param maxPrice
 	 * @return a list of all the company's coupons up to maximum price
-	 * @throws CouponSystemException
 	 */
-	public List<Coupon> getCompanyCoupons(double maxPrice) throws CouponSystemException {
+	public List<Coupon> getCompanyCoupons(double maxPrice) {
 		List<Coupon> coupons = new ArrayList<>();
 		for (Coupon coupon : getCompanyCoupons()) {
 			if (coupon.getPrice() <= maxPrice) {

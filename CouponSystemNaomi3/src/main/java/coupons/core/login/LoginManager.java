@@ -14,7 +14,6 @@ public class LoginManager {
 	private ApplicationContext ctx;
 	
 	
-
 	public ClientService login(String email, String password, ClientType clientType) throws CouponSystemException {
 		ClientService clientService;
 		switch (clientType) {
