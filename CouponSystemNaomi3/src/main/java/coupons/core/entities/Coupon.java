@@ -51,13 +51,11 @@ public class Coupon {
 	@Column(nullable = false)
 	private LocalDate endDate;
 	
-	@Column(nullable = false)
 	private int amount;
 	
 	@Column(nullable = false)
 	private double price;
 	
-	@Column(nullable = false)
 	private String image;
 	
 	@JsonIgnore

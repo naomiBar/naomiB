@@ -4,10 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -16,58 +17,58 @@ import coupons.core.entities.Category;
 import coupons.core.entities.Coupon;
 import coupons.core.entities.Customer;
 import coupons.core.exceptions.CouponSystemException;
+import coupons.core.jws.util.JwtUtil;
 import coupons.core.services.CustomerService;
 
+@CrossOrigin
 @RestController
-@RequestMapping("/customer") //http://localhost:8080/customer
-public class CustomerController extends ClientController {
+@RequestMapping("/api/CUSTOMER") 
+public class CustomerController {
 
 	@Autowired
 	private CustomerService service;
 	
-	@PutMapping(path = "/login/{email}/{password}")
-	@Override
-	public boolean login(@PathVariable String email, @PathVariable String password) {
-		return this.service.login(email, password);
-	}
+	@Autowired
+	private JwtUtil jwtUtil;
+
 	
 	@GetMapping(path = "/getCustomerDetails")
-	public Customer getCustomerDetails() {
-//		this.service.setCustomerId(5);
+	public Customer getCustomerDetails(@RequestHeader String token) {
 		try {
-			return this.service.getCustomerDetails();
+			return this.service.getCustomerDetails(this.jwtUtil.extractClient(token).getClentId());
 		} catch (CouponSystemException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());	
 		}
 	}
 	
 	@PostMapping(path = "/purchaseCoupon/{couponId}")
-	public void purchaseCoupon(@PathVariable int couponId) {
-//		this.service.setCustomerId(6);
+	public void purchaseCoupon(@PathVariable int couponId, @RequestHeader String token) {
+		System.out.println(">>>>>>>>>>couponId" + couponId);
 		try {
-			this.service.purchaseCoupon(couponId);
+			this.service.purchaseCoupon(couponId, this.jwtUtil.extractClient(token).getClentId());
 		} catch (CouponSystemException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());	
 		}
-		
+	}
+	
+	@GetMapping(path = "/getAllCoupons")
+	public List<Coupon> getAllCoupons(@RequestHeader String token) throws CouponSystemException {
+		return this.service.getAllCoupons();
 	}
 	
 	@GetMapping(path = "/getCustomerCoupons")
-	public List<Coupon> getCustomerCoupons() {
-//		this.service.setCustomerId(5);
-		return this.service.getCustomerCoupons();
+	public List<Coupon> getCustomerCoupons(@RequestHeader String token) throws CouponSystemException {
+		return this.service.getCustomerCoupons(this.jwtUtil.extractClient(token).getClentId());
 	}
 	
-	@GetMapping(path = "/getCompanyCouponsByCategory/{category}")
-	public List<Coupon> getCustomerCoupons(@PathVariable Category category) {
-//		this.service.setCustomerId(5);
-		return this.service.getCustomerCoupons(category);
+	@GetMapping(path = "/getCustomerCouponsByCategory/{category}")
+	public List<Coupon> getCustomerCoupons(@PathVariable Category category, @RequestHeader String token) throws CouponSystemException {
+		return this.service.getCustomerCoupons(category, this.jwtUtil.extractClient(token).getClentId());
 	}
 	
-	@GetMapping(path = "/getCompanyCouponsByMaxPrice/{maxPrice}")
-	public List<Coupon> getCustomerCoupons(@PathVariable double maxPrice) {
-//		this.service.setCustomerId(5);
-		return this.service.getCustomerCoupons(maxPrice);
+	@GetMapping(path = "/getCustomerCouponsByMaxPrice/{maxPrice}")
+	public List<Coupon> getCustomerCoupons(@PathVariable double maxPrice, @RequestHeader String token) throws CouponSystemException {
+		return this.service.getCustomerCoupons(maxPrice, this.jwtUtil.extractClient(token).getClentId());
 	}
 	
 }

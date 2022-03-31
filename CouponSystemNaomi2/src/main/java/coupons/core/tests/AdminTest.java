@@ -1,8 +1,8 @@
 package coupons.core.tests;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import coupons.core.entities.Company;
@@ -13,12 +13,17 @@ import coupons.core.login.LoginManager;
 import coupons.core.services.AdminService;
 
 @Component
-public class AdminTest {
+@Order(1)
+public class AdminTest implements CommandLineRunner{
 	
 	@Autowired
 	private LoginManager loginManager;
 	
-	@PostConstruct
+	@Override
+	public void run(String... args) throws Exception {
+		test();
+	}
+	
 	public void test() throws CouponSystemException {
 		System.out.println("===================== ADMIN ============================");
 		AdminService adminService = (AdminService) loginManager.login("admin@admin.com", "admin", ClientType.ADMINISTRATOR);
@@ -58,4 +63,6 @@ public class AdminTest {
 		
 		}
 	}
+
+
 }

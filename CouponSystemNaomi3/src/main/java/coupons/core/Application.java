@@ -4,9 +4,13 @@ import java.util.concurrent.TimeUnit;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+import coupons.core.filters.ClientFilter;
+import coupons.core.jws.util.JwtUtil;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
@@ -27,5 +31,24 @@ public class Application {
 			e.printStackTrace();
 		}
 		ctx.close();
+	}
+	
+	
+	@Bean
+	//register and map the filter:
+	public FilterRegistrationBean<ClientFilter> filter(JwtUtil jwtUtil){
+		
+		//container for registering filters:
+		FilterRegistrationBean<ClientFilter> filterRegistrationBean = new FilterRegistrationBean<>();
+		
+		//register our filter - set the filter:
+		ClientFilter clientFilter = new ClientFilter(jwtUtil);
+		filterRegistrationBean.setFilter(clientFilter);
+		
+		//map the filter to a url pattern:
+		filterRegistrationBean.addUrlPatterns("/api/*");
+		
+		//return the FilterRegistrationBean:
+		return filterRegistrationBean;
 	}
 }

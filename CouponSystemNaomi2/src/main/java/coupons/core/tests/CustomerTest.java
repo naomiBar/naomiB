@@ -1,8 +1,8 @@
 package coupons.core.tests;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import coupons.core.entities.Category;
@@ -12,12 +12,17 @@ import coupons.core.login.LoginManager;
 import coupons.core.services.CustomerService;
 
 @Component
-public class CustomerTest {
+@Order(3)
+public class CustomerTest implements CommandLineRunner{
 	
 	@Autowired
 	private LoginManager loginManager;
 	
-	@PostConstruct
+	@Override
+	public void run(String... args) throws Exception {
+		test();
+	}
+	
 	public void test() throws CouponSystemException {
 		System.out.println("===================== CUSTOMER ============================");
 		CustomerService customerService = (CustomerService) loginManager.login("roni@gmail.com", "0000", ClientType.CUSTOMER);

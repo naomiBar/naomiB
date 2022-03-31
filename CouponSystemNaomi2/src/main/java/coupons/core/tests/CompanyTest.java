@@ -2,9 +2,9 @@ package coupons.core.tests;
 
 import java.time.LocalDate;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import coupons.core.entities.Category;
@@ -16,12 +16,17 @@ import coupons.core.login.LoginManager;
 import coupons.core.services.CompanyService;
 
 @Component
-public class CompanyTest {
+@Order(2)
+public class CompanyTest implements CommandLineRunner{
 	
 	@Autowired
 	private LoginManager loginManager;
 	
-	@PostConstruct
+	@Override
+	public void run(String... args) throws Exception {
+		test();
+	}
+
 	public void test() throws CouponSystemException {
 		System.out.println("===================== COMPANY ============================");
 		CompanyService companyService = (CompanyService) loginManager.login("daka90@gmail.com", "1234", ClientType.COMPANY);

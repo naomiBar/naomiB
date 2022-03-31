@@ -9,6 +9,7 @@ import coupons.core.repositories.CustomerRepository;
 
 public abstract class ClientService {
 
+
 	@Autowired
 	protected CompanyRepository companyRepository;
 	@Autowired
@@ -16,6 +17,12 @@ public abstract class ClientService {
 	@Autowired
 	protected CouponRepository couponRepository;
 	
+	protected int clientId;
+	
+	public int getClientId() {
+		return clientId;
+	}
+
 	/**
 	 * check if a client (ADMINISTRATOR, COMPANY, CUSTOMER) can login by email and password.
 	 * @param email

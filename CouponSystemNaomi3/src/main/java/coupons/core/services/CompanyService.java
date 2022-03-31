@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,21 +15,13 @@ import coupons.core.exceptions.CouponSystemException;
 
 @Service
 @Transactional
-@Scope("prototype")
 public class CompanyService extends ClientService {
-
-	private int companyId;
-
-	
-	public void setCompanyId(int companyId) {
-		this.companyId = companyId;
-	}
 
 	@Override
 	public boolean login(String email, String password) {
 		Optional<Company> opt = companyRepository.findCompanyByEmailAndPassword(email, password);
 		if (opt.isPresent()) {
-			this.companyId = opt.get().getId();
+			super.clientId = opt.get().getId();
 			return true;
 		}
 		return false;
@@ -43,11 +34,10 @@ public class CompanyService extends ClientService {
 	 *              or if coupon's dates are not correct,
 	 *              or companyId and title of the coupon are taken
 	 */
-	public void addCoupon(Coupon coupon) throws CouponSystemException {
+	public void addCoupon(Coupon coupon, int companyId) throws CouponSystemException {
 		// check if coupon's features are not null:
 		if (coupon.getCategory() == null || coupon.getTitle() == null || coupon.getDescription() == null
-				|| coupon.getStartDate() == null || coupon.getEndDate() == null || coupon.getAmount() == 0
-				|| coupon.getPrice() == 0 || coupon.getImage() == null) {
+				|| coupon.getStartDate() == null || coupon.getEndDate() == null || coupon.getPrice() == 0) {
 			throw new CouponSystemException("addCoupon failed - impossible add coupon with null features");
 		}
 		
@@ -58,8 +48,8 @@ public class CompanyService extends ClientService {
 		}
 
 		// check if coupon exist by companyId and title:
-		if (!(this.couponRepository.existsByTitleAndCompanyId(coupon.getTitle(), this.companyId))) {
-			Company company = this.getCompanyDetails();
+		if (!(this.couponRepository.existsByTitleAndCompanyId(coupon.getTitle(), companyId))) {
+			Company company = this.getCompanyDetails(companyId);
 			company.addCoupon(coupon);
 		} else {
 			throw new CouponSystemException("addCoupon failed - title already exists for this company");
@@ -71,16 +61,15 @@ public class CompanyService extends ClientService {
 	 * @param coupon to be updated
 	 * @throws CouponSystemException if the coupon's features are null or the coupon not exists by id and companyId
 	 */
-	public void updateCoupon(Coupon coupon) throws CouponSystemException {
+	public void updateCoupon(Coupon coupon, int companyId) throws CouponSystemException {
 		// check if coupon's features are not null:
 		if (coupon.getCategory() == null || coupon.getTitle() == null || coupon.getDescription() == null
-				|| coupon.getStartDate() == null || coupon.getEndDate() == null || coupon.getAmount() == 0
-				|| coupon.getPrice() == 0 || coupon.getImage() == null) {
+				|| coupon.getStartDate() == null || coupon.getEndDate() == null || coupon.getPrice() == 0) {
 			throw new CouponSystemException("updateCoupon failed - impossible update coupon with null features");
 		}
 		// check if coupon exists by id and companyId:
-		if(this.couponRepository.existsByIdAndCompanyId(coupon.getId(), this.companyId)) {
-			coupon.setCompany(getCompanyDetails());
+		if(this.couponRepository.existsByIdAndCompanyId(coupon.getId(), companyId)) {
+			coupon.setCompany(getCompanyDetails(companyId));
 			this.couponRepository.save(coupon);
 		} else {
 			throw new CouponSystemException("updateCoupon failed - coupon id " + coupon.getId() + " NOT exist in this company ");
@@ -94,33 +83,49 @@ public class CompanyService extends ClientService {
 	 * @param couponId
 	 * @throws CouponSystemException if the coupon not exists by id and companyId
 	 */
-	public void deleteCoupon(int couponId) throws CouponSystemException {
+	public void deleteCoupon(int couponId, int companyId) throws CouponSystemException {
 		// check if coupon exists by id and companyId:
-		if (this.couponRepository.existsByIdAndCompanyId(couponId, this.companyId)) {
+		if (this.couponRepository.existsByIdAndCompanyId(couponId, companyId)) {
 			this.couponRepository.deleteById(couponId);
 		} else {
 			throw new CouponSystemException("deleteCoupon failed - coupon id " + couponId + " NOT exist in this company ");
 		}
 	}
+	
+	
+	/**
+	 * returns the coupon by id.
+	 * @param couponId, companyId
+	 * @return the coupon for this company 
+	 * @throws CouponSystemException if coupon's id not found
+	 */
+	public Coupon getOneCoupon(int couponId, int companyId) throws CouponSystemException {
+		Optional<Coupon> opt = this.couponRepository.findCouponByIdAndCompanyId(couponId, companyId);
+		if(opt.isPresent()) {
+			return opt.get();
+		}
+		throw new CouponSystemException("getOneCoupon failed - coupon id " + couponId + " NOT found in this company ");
+	}
 
+	
 	/**
 	 * return company's details.
 	 * @return the company
 	 * @throws CouponSystemException if company's id not found
 	 */
-	public Company getCompanyDetails() throws CouponSystemException {
-		Optional<Company> opt = this.companyRepository.findById(this.companyId);
+	public Company getCompanyDetails(int companyId) throws CouponSystemException {
+		Optional<Company> opt = this.companyRepository.findById(companyId);
 		if (opt.isPresent()) {
 			return opt.get();
 		}
-		throw new CouponSystemException("getCompanyDetails failed - company id " + this.companyId + " NOT found");
+		throw new CouponSystemException("getCompanyDetails failed - company id " + companyId + " NOT found");
 	}
 
 	/**
 	 * return all the company's coupons in the DB.
 	 * @return a list of all company's coupons
 	 */
-	public List<Coupon> getCompanyCoupons() {
+	public List<Coupon> getCompanyCoupons(int companyId) {
 		return this.couponRepository.findCouponsByCompanyId(companyId);
 	}
 
@@ -129,9 +134,9 @@ public class CompanyService extends ClientService {
 	 * @param category
 	 * @return a list of all the company's coupons from a specific category
 	 */
-	public List<Coupon> getCompanyCoupons(Category category) {
-		List<Coupon> coupons = new ArrayList<>();
-		for (Coupon coupon : getCompanyCoupons()) {
+	public List<Coupon> getCompanyCoupons(Category category, int companyId) {
+		List<Coupon> coupons = new ArrayList<>();			
+		for (Coupon coupon : getCompanyCoupons(companyId)) {
 			if (coupon.getCategory() == category) {
 				coupons.add(coupon);
 			}
@@ -144,9 +149,9 @@ public class CompanyService extends ClientService {
 	 * @param maxPrice
 	 * @return a list of all the company's coupons up to maximum price
 	 */
-	public List<Coupon> getCompanyCoupons(double maxPrice) {
+	public List<Coupon> getCompanyCoupons(double maxPrice, int companyId) {
 		List<Coupon> coupons = new ArrayList<>();
-		for (Coupon coupon : getCompanyCoupons()) {
+		for (Coupon coupon : getCompanyCoupons(companyId)) {
 			if (coupon.getPrice() <= maxPrice) {
 				coupons.add(coupon);
 			}
